@@ -1,6 +1,8 @@
 using Linguaflow.DAL;
 using LinguaFlow.BLL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace LinguaFlow
 {
@@ -15,6 +17,16 @@ namespace LinguaFlow
 
             builder.Services.AddDbContext<LinguaFlowContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<LinguaFlowContext>()
+                .AddDefaultTokenProviders();
+
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
 
             builder.Services.AddScoped<TutorRepository>();
             builder.Services.AddScoped<TutorService>();
@@ -52,6 +64,7 @@ namespace LinguaFlow
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

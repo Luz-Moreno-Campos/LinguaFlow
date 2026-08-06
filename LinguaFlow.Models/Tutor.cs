@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace LinguaFlow.Models
 {
     public class Tutor
@@ -22,9 +23,14 @@ namespace LinguaFlow.Models
 
         public string Availability { get; set; }
 
-
+    
         // Many-to-many : tutor delivers many courses, and courses can be delivered by many teachers
         public ICollection<Course> Courses { get; set; } = new List<Course>();
+
+
+        //One-to-many: a tutor can have many fees, each fee belongs to one tutor
+        public ICollection<TutorFee> TutorFees { get; set; } = new List<TutorFee>();
+
     }
 
 }

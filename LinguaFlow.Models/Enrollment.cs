@@ -25,5 +25,8 @@ namespace LinguaFlow.Models
 
         public string Status { get; set; } = "Active";
 
+        public Payment Payment { get; set; }
+        public TutorFee TutorFee { get; set; }
+
     }
 }

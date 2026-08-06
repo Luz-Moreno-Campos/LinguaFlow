@@ -10,14 +10,14 @@ namespace LinguaFlow.Models
     {
         public int Id { get; set; }
 
-        public string CourseName { get; set; } 
+        public string Title { get; set; } 
 
         public string? Description { get; set; } = "The description for this course will be available soon";
 
         public decimal Price { get; set; }
 
         // Many-to-many with Tutor
-        public ICollection<Tutor> CourseTutors { get; set; } = new List<Tutor>();
+        public ICollection<Tutor> Tutors { get; set; } = new List<Tutor>();
 
         // Relationship with Enrollment
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
