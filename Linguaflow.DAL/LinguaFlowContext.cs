@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinguaFlow.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LinguaFlow.Models;
 
 namespace Linguaflow.DAL
 {
-    public class LinguaFlowContext : DbContext
+    public class LinguaFlowContext : IdentityDbContext<IdentityUser>
     {
         public LinguaFlowContext(DbContextOptions<LinguaFlowContext> options)
             : base(options)

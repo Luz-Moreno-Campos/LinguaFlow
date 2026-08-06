@@ -1,4 +1,4 @@
-namespace LinguaFlow.Models
+namespace LinguaFlowUI.Models
 {
     public class ErrorViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace LinguaFlow.MVC.Controllers
+namespace LinguaFlowUI.Controllers
 {
     public class PaymentController : Controller
     {

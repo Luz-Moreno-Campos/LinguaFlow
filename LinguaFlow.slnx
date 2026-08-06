@@ -2,5 +2,5 @@
   <Project Path="LinguaFlow.BLL/LinguaFlow.BLL.csproj" />
   <Project Path="Linguaflow.DAL/Linguaflow.DAL.csproj" />
   <Project Path="LinguaFlow.Models/LinguaFlow.Models.csproj" />
-  <Project Path="LinguaFlow/LinguaFlow.MVC.csproj" />
+  <Project Path="LinguaFlow/LinguaFlowUI.csproj" />
 </Solution>

@@ -1,8 +1,8 @@
-using LinguaFlow.Models;
+using LinguaFlowUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace LinguaFlow.Controllers
+namespace LinguaFlowUI.Controllers
 {
     public class HomeController : Controller
     {
