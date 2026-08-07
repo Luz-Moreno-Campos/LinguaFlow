@@ -82,6 +82,7 @@ namespace Linguaflow.DAL
 
             modelBuilder.Entity<Course>()
                 .Property(c => c.Price)
+                .HasPrecision(10, 2)
                 .IsRequired();
 
 
@@ -103,9 +104,17 @@ namespace Linguaflow.DAL
 
 
             // Enrollment
+
+            // this index with unique constraint prevents students from enrolling in the same course twice
             modelBuilder.Entity<Enrollment>()
+               .HasIndex(e => new { e.StudentId, e.CourseId })
+               .IsUnique();
+
+            modelBuilder.Entity<Enrollment>()
+
                 .Property(e => e.EnrollmentDate)
                 .IsRequired();
+       
 
             modelBuilder.Entity<Enrollment>()
                 .Property(e => e.Status)
@@ -116,6 +125,7 @@ namespace Linguaflow.DAL
             // Tutor Fee
             modelBuilder.Entity<TutorFee>()
                 .Property(tf => tf.FeeAmount)
+                .HasPrecision(10, 2)
                 .IsRequired();
 
             modelBuilder.Entity<TutorFee>()
@@ -134,6 +144,7 @@ namespace Linguaflow.DAL
             // Payment
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
+                .HasPrecision(10, 2)
                 .IsRequired();
 
             modelBuilder.Entity<Payment>()
