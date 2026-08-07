@@ -15,12 +15,12 @@ namespace LinguaFlowUI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             builder.Services.AddDbContext<LinguaFlowContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            //builder.Services.AddDbContext<ApplicationIdentityContext>(options =>
-            //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+          
 
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -29,11 +29,6 @@ namespace LinguaFlowUI
             .AddEntityFrameworkStores<LinguaFlowContext>();
 
 
-
-            /* builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                 .AddEntityFrameworkStores<LinguaFlowContext>()
-                 .AddDefaultTokenProviders();
-            */
 
 
             builder.Services.Configure<IdentityOptions>(options =>
@@ -84,7 +79,7 @@ namespace LinguaFlowUI
                     // Create an admin user
                     IdentityUser adminUser = new IdentityUser
                     {
-                        UserName = "LFAdmin",
+                        UserName = "admin@linguaflow.com",
                         Email = "admin@linguaflow.com",
                         EmailConfirmed = true
                     };
@@ -97,7 +92,7 @@ namespace LinguaFlowUI
                     // Create a tutor user
                     IdentityUser tutorUser = new IdentityUser
                     {
-                        UserName = "LFTutor",
+                        UserName = "tutor@linguaflow.com",
                         Email = "tutor@linguaflow.com",
                         EmailConfirmed = true
                     };
@@ -110,7 +105,7 @@ namespace LinguaFlowUI
                     // Create a student user
                     IdentityUser studentUser = new IdentityUser
                     {
-                        UserName = "LFStudent",
+                        UserName = "student@linguaflow.com",
                         Email = "student@linguaflow.com",
                         EmailConfirmed = true
                     };
