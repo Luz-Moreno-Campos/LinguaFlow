@@ -57,6 +57,8 @@ namespace LinguaFlowUI
             builder.Services.AddScoped<PaymentRepository>();
             builder.Services.AddScoped<PaymentService>();
 
+            builder.Services.AddScoped<AdminService>();
+
 
 
             static async Task SeedRolesAndAdminUserAsync(IServiceProvider serviceProvider)

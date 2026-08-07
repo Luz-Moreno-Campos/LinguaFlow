@@ -8,5 +8,12 @@ namespace Linguaflow.DAL
 {
     public class CourseRepository
     {
+
+        private readonly LinguaFlowContext _context;
+
+        public CourseRepository(LinguaFlowContext context)
+        {
+            _context = context;
+        }
     }
 }

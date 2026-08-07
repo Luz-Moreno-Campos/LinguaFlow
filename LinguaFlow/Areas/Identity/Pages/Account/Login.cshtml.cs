@@ -110,19 +110,9 @@ public class LoginModel : PageModel
 
         if (ModelState.IsValid)
         {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            //var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-            var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-
-            if (user == null)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return Page();
-            }
-
+            // 1. Iniciar sesión directamente por Email/UserName
             var result = await _signInManager.PasswordSignInAsync(
-                user.UserName,
+                Input.Email,
                 Input.Password,
                 Input.RememberMe,
                 lockoutOnFailure: false);
@@ -130,8 +120,26 @@ public class LoginModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
+
+                // 2. Buscar al usuario autenticado
+                var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+
+                if (user != null)
+                {
+                    // 3. Verificar si es Admin
+                    var isAdmin = await _signInManager.UserManager.IsInRoleAsync(user, "Admin");
+
+                    if (isAdmin)
+                    {
+                        // Redirección explícita fuera del Área 'Identity' hacia Views/Admin/Home.cshtml
+                        return RedirectToAction("Home", "Admin", new { area = "" });
+                    }
+                }
+
+                // Si no es admin (Tutor o Student)
                 return LocalRedirect(returnUrl);
             }
+
             if (result.RequiresTwoFactor)
             {
                 return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
@@ -143,12 +151,11 @@ public class LoginModel : PageModel
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Intento de inicio de sesión no válido.");
                 return Page();
             }
         }
 
-        // If we got this far, something failed, redisplay form
         return Page();
     }
 }
