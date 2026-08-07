@@ -1,14 +1,65 @@
 ﻿@model LinguaFlow.Models.ViewModels.AdminHomeViewModel
 
 
-<h2>Welcome, Admin</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Hello, Admin! These are your metrics:</h2>
 
-<div class="metrics">
-    <p>Total Tutors: @Model.TotalTutors</p>
-    <p>Total Students: @Model.TotalStudents</p>
-    <p>Total Enrollments: @Model.TotalEnrollments</p>
-    <p>Total Payments Received: @Model.TotalPaymentsReceived</p>
-    <p>Total Pending Payments : @Model.TotalPaymentsPending</p>
-    <p>Total Pending Fees: @Model.TotalFeesPending</p>
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Total Tutors</h5>
+                    <p class="display-6">@Model.TotalTutors</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Total Students</h5>
+                    <p class="display-6">@Model.TotalStudents</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Total Enrollments</h5>
+                    <p class="display-6">@Model.TotalEnrollments</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Payments Received</h5>
+                    <p class="display-6 text-success">$@Model.TotalPaymentsReceived</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Payments Pending</h5>
+                    <p class="display-6 text-warning">$@Model.TotalPaymentsPending</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">Fees Pending</h5>
+                    <p class="display-6 text-danger">$@Model.TotalFeesPending</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 

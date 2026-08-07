@@ -15,7 +15,7 @@ namespace Linguaflow.DAL
             _context = context;
         }
 
-        public int CountTutors()
+        public int CountEnrollments()
         {
             return _context.Enrollments.Count();
         }
