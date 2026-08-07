@@ -1,0 +1,50 @@
+﻿@model LinguaFlow.Models.ViewModels.TutorCreateViewModel
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">Add New Tutor</h2>
+
+    <form asp-action="Create" method="post" class="card shadow-lg p-4">
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Bio</label>
+            <textarea asp-for="Bio" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Language</label>
+            <select asp-for="LanguageId" class="form-select">
+                @foreach (var lang in Model.Languages)
+                {
+                    <option value="@lang.Id">@lang.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Availability</label>
+            <input asp-for="Availability" class="form-control" />
+        </div>
+
+        <button class="btn btn-success btn-lg">
+            <i class="bi bi-check-circle"></i> Create Tutor
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
