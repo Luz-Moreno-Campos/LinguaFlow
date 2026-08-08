@@ -145,15 +145,19 @@ namespace LinguaFlowUI.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var student = new Student
-            {
-                Id = vm.Id,
-                FirstName = vm.FirstName,
-                LastName = vm.LastName,
-                Email = vm.Email,
-                Password = vm.Password
-            };
+            // 1. Obtener la entidad rastreada directamente de la BD
+            var student = _service.GetStudentById(vm.Id);
 
+            if (student == null)
+                return NotFound();
+
+            // 2. Modificar sus propiedades directamente
+            student.FirstName = vm.FirstName;
+            student.LastName = vm.LastName;
+            student.Email = vm.Email;
+            // La contraseña se mantiene intacta en 'student.Password'
+
+            // 3. Guardar cambios (Update notificará al context)
             _service.UpdateStudent(student);
 
             TempData["SuccessMessage"] = "Student updated successfully.";

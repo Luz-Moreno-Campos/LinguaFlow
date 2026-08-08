@@ -22,7 +22,11 @@ namespace LinguaFlow.BLL
             return _repo.CountStudents();
         }
 
-       
+        public Student GetStudentById(int id)
+        {
+            return _repo.GetById(id);
+        }
+
         public List<Student> GetStudents(string searchName, int? languageId)
         {
             return _repo.GetAll(searchName, languageId);

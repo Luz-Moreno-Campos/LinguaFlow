@@ -12,13 +12,19 @@ namespace Linguaflow.DAL
             _context = context;
         }
 
-        // METRIC
+
         public int CountStudents()
         {
             return _context.Students.Count();
         }
 
-        
+        public Student GetById(int id)
+        {
+            return _context.Students
+                           .FirstOrDefault(s => s.Id == id);
+        }
+
+
         public List<Student> GetAll(string searchName, int? languageId)
         {
 

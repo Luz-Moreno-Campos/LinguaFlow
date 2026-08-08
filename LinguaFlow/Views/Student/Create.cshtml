@@ -1,0 +1,58 @@
+﻿@model LinguaFlow.Models.ViewModels.StudentCreateViewModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4 text-center">Add New Student</h2>
+
+    <div class="d-flex justify-content-center mt-4 w-100">
+
+        <form asp-action="Create" method="post"
+              class="card shadow-lg p-4 w-100"
+              style="max-width: 600px;">
+
+          
+            <div class="mb-3">
+                <label class="form-label fw-semibold">First Name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+          
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Last Name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+          
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+          
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Password</label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button class="btn btn-success btn-lg w-100">
+                <i class="bi bi-check-circle"></i> Create Student
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary btn-lg mt-3 w-100">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
