@@ -3,10 +3,11 @@ using LinguaFlow.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using LinguaFlow.Models;
 
 namespace LinguaFlowUI.Controllers
 {
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Admin")]
     public class TutorController : Controller
     {
         private readonly LinguaFlowContext _context;
@@ -16,14 +17,13 @@ namespace LinguaFlowUI.Controllers
             _context = context;
         }
 
-      
-        public async Task<IActionResult> Index(string searchName, int? searchLanguageId)
+        public IActionResult Index(string searchName, int? searchLanguageId)
         {
             var vm = new TutorIndexViewModel
             {
-                SearchName = searchName,
+                SearchName = null,
                 SearchLanguageId = searchLanguageId,
-                Languages = await _context.Languages.ToListAsync()
+                Languages = _context.Languages.ToList()
             };
 
             var query = _context.Tutors
@@ -37,7 +37,7 @@ namespace LinguaFlowUI.Controllers
             if (searchLanguageId.HasValue)
                 query = query.Where(t => t.LanguageId == searchLanguageId.Value);
 
-            vm.Tutors = await query
+            vm.Tutors = query
                 .Select(t => new TutorListItemViewModel
                 {
                     Id = t.Id,
@@ -46,17 +46,16 @@ namespace LinguaFlowUI.Controllers
                     LanguageName = t.Language.Name,
                     Availability = t.Availability
                 })
-                .ToListAsync();
+                .ToList();
 
             return View(vm);
         }
 
-     
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
-            var tutor = await _context.Tutors
+            var tutor = _context.Tutors
                 .Include(t => t.Language)
-                .FirstOrDefaultAsync(t => t.Id == id);
+                .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
                 return NotFound();
@@ -74,20 +73,128 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-   
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Create()
         {
-            var tutor = await _context.Tutors.FindAsync(id);
+            var vm = new TutorCreateViewModel
+            {
+                Languages = _context.Languages.ToList()
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Create(TutorCreateViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                vm.Languages = _context.Languages.ToList();
+                return View(vm);
+            }
+
+            var tutor = new Tutor
+            {
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Bio = vm.Bio,
+                LanguageId = vm.LanguageId,
+                Availability = vm.Availability
+            };
+
+            _context.Tutors.Add(tutor);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Tutor created successfully.";
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var tutor = _context.Tutors.Find(id);
+
+            if (tutor == null)
+                return NotFound();
+
+            var vm = new TutorEditViewModel
+            {
+                Id = tutor.Id,
+                FirstName = tutor.FirstName,
+                LastName = tutor.LastName,
+                Bio = tutor.Bio,
+                LanguageId = tutor.LanguageId,
+                Availability = tutor.Availability,
+                Languages = _context.Languages.ToList()
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(TutorEditViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                vm.Languages = _context.Languages.ToList();
+                return View(vm);
+            }
+
+            var tutor = _context.Tutors.Find(vm.Id);
+
+            if (tutor == null)
+                return NotFound();
+
+            tutor.FirstName = vm.FirstName;
+            tutor.LastName = vm.LastName;
+            tutor.Bio = vm.Bio;
+            tutor.LanguageId = vm.LanguageId;
+            tutor.Availability = vm.Availability;
+
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Tutor updated successfully.";
+
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            var tutor = _context.Tutors
+                .Include(t => t.Language)
+                .FirstOrDefault(t => t.Id == id);
+
+            if (tutor == null)
+                return NotFound();
+
+            var vm = new TutorDetailViewModel
+            {
+                Id = tutor.Id,
+                FirstName = tutor.FirstName,
+                LastName = tutor.LastName,
+                Bio = tutor.Bio,
+                LanguageName = tutor.Language.Name,
+                Availability = tutor.Availability
+            };
+
+            return View(vm); 
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var tutor = _context.Tutors.Find(id);
 
             if (tutor == null)
                 return NotFound();
 
             _context.Tutors.Remove(tutor);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Tutor deleted successfully.";
 
             return RedirectToAction("Index");
         }
+
     }
 }
-
-

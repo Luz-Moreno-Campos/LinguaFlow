@@ -16,7 +16,6 @@
 		<Folder Include="Views\Payment\" />
 		<Folder Include="Views\TutorFee\" />
 		<Folder Include="Views\Student\" />
-		<Folder Include="Views\Tutor\" />
 	</ItemGroup>
 
 	<ItemGroup>

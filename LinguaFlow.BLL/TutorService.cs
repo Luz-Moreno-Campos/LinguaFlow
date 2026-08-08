@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using LinguaFlow.Models;
 using Linguaflow.DAL;
 
-namespace LinguaFlow.BLL.Services
+namespace LinguaFlow.BLL
 {
     public class TutorService
     {

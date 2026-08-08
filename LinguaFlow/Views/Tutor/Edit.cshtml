@@ -1,10 +1,17 @@
-﻿@model LinguaFlow.Models.ViewModels.TutorCreateViewModel
+﻿@model LinguaFlow.Models.ViewModels.TutorEditViewModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
 
 <div class="container py-4">
 
-    <h2 class="fw-bold mb-4">Add New Tutor</h2>
+    <h2 class="fw-bold mb-4">Edit Tutor</h2>
 
-    <form asp-action="Create" method="post" class="card shadow-lg p-4">
+    <form asp-action="Edit" method="post" class="card shadow-lg p-4">
+
+        <input type="hidden" asp-for="Id" />
 
         <div class="mb-3">
             <label class="form-label fw-semibold">First Name</label>
@@ -26,7 +33,9 @@
             <select asp-for="LanguageId" class="form-select">
                 @foreach (var lang in Model.Languages)
                 {
-                    <option value="@lang.Id">@lang.Name</option>
+                    <option value="@lang.Id" selected="@(Model.LanguageId == lang.Id)">
+                        @lang.Name
+                    </option>
                 }
             </select>
         </div>
@@ -36,8 +45,8 @@
             <input asp-for="Availability" class="form-control" />
         </div>
 
-        <button class="btn btn-success btn-lg">
-            <i class="bi bi-check-circle"></i> Create Tutor
+        <button class="btn btn-primary btn-lg">
+            <i class="bi bi-save"></i> Save Changes
         </button>
 
         <a asp-action="Index" class="btn btn-secondary btn-lg ms-2">
