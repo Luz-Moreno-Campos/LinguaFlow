@@ -1,61 +1,52 @@
-﻿using Linguaflow.DAL;
+﻿using LinguaFlow.BLL;
+using LinguaFlow.Models;
 using LinguaFlow.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LinguaFlow.Models;
 
 namespace LinguaFlowUI.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class TutorController : Controller
     {
-        private readonly LinguaFlowContext _context;
+        private readonly TutorService _service;
 
-        public TutorController(LinguaFlowContext context)
+        public TutorController(TutorService service)
         {
-            _context = context;
+            _service = service;
         }
 
+        [HttpGet]
         public IActionResult Index(string searchName, int? searchLanguageId)
         {
+            var tutors = _service.GetTutors(searchName, searchLanguageId);
+
             var vm = new TutorIndexViewModel
             {
-                SearchName = null,
+                SearchName = searchName,
                 SearchLanguageId = searchLanguageId,
-                Languages = _context.Languages.ToList()
-            };
-
-            var query = _context.Tutors
-                .Include(t => t.Language)
-                .AsQueryable();
-
-            if (!string.IsNullOrEmpty(searchName))
-                query = query.Where(t => t.FirstName.Contains(searchName)
-                                      || t.LastName.Contains(searchName));
-
-            if (searchLanguageId.HasValue)
-                query = query.Where(t => t.LanguageId == searchLanguageId.Value);
-
-            vm.Tutors = query
-                .Select(t => new TutorListItemViewModel
+                Languages = tutors
+                    .Select(t => t.Language)
+                    .Distinct()
+                    .ToList(),
+                Tutors = tutors.Select(t => new TutorListViewModel
                 {
                     Id = t.Id,
                     FirstName = t.FirstName,
                     LastName = t.LastName,
-                    LanguageName = t.Language.Name,
+                    LanguageName = t.Language?.Name,
                     Availability = t.Availability
-                })
-                .ToList();
+                }).ToList()
+            };
 
             return View(vm);
         }
 
+        [HttpGet]
         public IActionResult Details(int id)
         {
-            var tutor = _context.Tutors
-                .Include(t => t.Language)
-                .FirstOrDefault(t => t.Id == id);
+            var tutor = _service.GetTutors(null, null)
+                                .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
                 return NotFound();
@@ -66,18 +57,23 @@ namespace LinguaFlowUI.Controllers
                 FirstName = tutor.FirstName,
                 LastName = tutor.LastName,
                 Bio = tutor.Bio,
-                LanguageName = tutor.Language.Name,
+                LanguageName = tutor.Language?.Name,
                 Availability = tutor.Availability
             };
 
             return View(vm);
         }
 
+
+        [HttpGet]
         public IActionResult Create()
         {
             var vm = new TutorCreateViewModel
             {
-                Languages = _context.Languages.ToList()
+                Languages = _service.GetTutors(null, null)
+                                    .Select(t => t.Language)
+                                    .Distinct()
+                                    .ToList()
             };
 
             return View(vm);
@@ -88,7 +84,10 @@ namespace LinguaFlowUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                vm.Languages = _context.Languages.ToList();
+                vm.Languages = _service.GetTutors(null, null)
+                                       .Select(t => t.Language)
+                                       .Distinct()
+                                       .ToList();
                 return View(vm);
             }
 
@@ -101,17 +100,18 @@ namespace LinguaFlowUI.Controllers
                 Availability = vm.Availability
             };
 
-            _context.Tutors.Add(tutor);
-            _context.SaveChanges();
+            _service.CreateTutor(tutor);
 
             TempData["SuccessMessage"] = "Tutor created successfully.";
-
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
-            var tutor = _context.Tutors.Find(id);
+            var tutor = _service.GetTutors(null, null)
+                                .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
                 return NotFound();
@@ -124,7 +124,10 @@ namespace LinguaFlowUI.Controllers
                 Bio = tutor.Bio,
                 LanguageId = tutor.LanguageId,
                 Availability = tutor.Availability,
-                Languages = _context.Languages.ToList()
+                Languages = _service.GetTutors(null, null)
+                                    .Select(t => t.Language)
+                                    .Distinct()
+                                    .ToList()
             };
 
             return View(vm);
@@ -135,34 +138,34 @@ namespace LinguaFlowUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                vm.Languages = _context.Languages.ToList();
+                vm.Languages = _service.GetTutors(null, null)
+                                       .Select(t => t.Language)
+                                       .Distinct()
+                                       .ToList();
                 return View(vm);
             }
 
-            var tutor = _context.Tutors.Find(vm.Id);
+            var tutor = new Tutor
+            {
+                Id = vm.Id,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Bio = vm.Bio,
+                LanguageId = vm.LanguageId,
+                Availability = vm.Availability
+            };
 
-            if (tutor == null)
-                return NotFound();
-
-            tutor.FirstName = vm.FirstName;
-            tutor.LastName = vm.LastName;
-            tutor.Bio = vm.Bio;
-            tutor.LanguageId = vm.LanguageId;
-            tutor.Availability = vm.Availability;
-
-            _context.SaveChanges();
+            _service.UpdateTutor(tutor);
 
             TempData["SuccessMessage"] = "Tutor updated successfully.";
-
             return RedirectToAction("Index");
         }
 
-
+        [HttpGet]
         public IActionResult Delete(int id)
         {
-            var tutor = _context.Tutors
-                .Include(t => t.Language)
-                .FirstOrDefault(t => t.Id == id);
+            var tutor = _service.GetTutors(null, null)
+                                .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
                 return NotFound();
@@ -173,28 +176,20 @@ namespace LinguaFlowUI.Controllers
                 FirstName = tutor.FirstName,
                 LastName = tutor.LastName,
                 Bio = tutor.Bio,
-                LanguageName = tutor.Language.Name,
+                LanguageName = tutor.Language?.Name,
                 Availability = tutor.Availability
             };
 
-            return View(vm); 
+            return View(vm);
         }
 
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
-            var tutor = _context.Tutors.Find(id);
-
-            if (tutor == null)
-                return NotFound();
-
-            _context.Tutors.Remove(tutor);
-            _context.SaveChanges();
+            _service.DeleteTutor(id);
 
             TempData["SuccessMessage"] = "Tutor deleted successfully.";
-
             return RedirectToAction("Index");
         }
-
     }
 }

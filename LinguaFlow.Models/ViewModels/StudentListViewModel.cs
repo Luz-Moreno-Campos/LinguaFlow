@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace LinguaFlow.Models.ViewModels
 {
-    public class TutorDetailViewModel
+    public class StudentListViewModel
     {
         public int Id { get; set; }
 
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
 
-        public string? Bio { get; set; }
+        public string Email { get; set; }
 
-        public string LanguageName { get; set; }
-        public string Availability { get; set; }
+        //if student hasn't enrolled yet, it
+        public List<string> LanguageNames { get; set; } = new List<string>();
+ 
     }
-
-
 }
