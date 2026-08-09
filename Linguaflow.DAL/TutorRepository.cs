@@ -46,7 +46,14 @@ namespace Linguaflow.DAL
             return query.ToList();
         }
 
-        
+        public List<Tutor> GetTutorsByLanguage(int languageId)
+        {
+            return _context.Tutors
+                .Where(t => t.LanguageId == languageId)
+                .ToList();
+        }
+
+
         public void Add(Tutor tutor)
         {
             _context.Tutors.Add(tutor);

@@ -29,7 +29,12 @@ namespace LinguaFlow.BLL
             return _tutorRepo.GetAll(searchName, languageId);
         }
 
-        
+        public List<Tutor> GetTutorsByLanguage(int languageId)
+        {
+            return _tutorRepo.GetTutorsByLanguage(languageId);
+        }
+
+
         public void CreateTutor(Tutor tutor)
         {
             _tutorRepo.Add(tutor);

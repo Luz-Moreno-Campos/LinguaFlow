@@ -6,20 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinguaFlowUI.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class TutorController : Controller
     {
-        private readonly TutorService _service;
+        private readonly TutorService _tutorService;
+        private readonly LanguageService _languageService;
 
-        public TutorController(TutorService service)
+        public TutorController(TutorService tutorService, LanguageService languageService)
         {
-            _service = service;
+            _tutorService = tutorService;
+            _languageService = languageService;
         }
 
+       
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Index(string searchName, int? searchLanguageId)
         {
-            var tutors = _service.GetTutors(searchName, searchLanguageId);
+            var tutors = _tutorService.GetTutors(searchName, searchLanguageId);
 
             var vm = new TutorIndexViewModel
             {
@@ -42,10 +45,12 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+       
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var tutor = _service.GetTutors(null, null)
+            var tutor = _tutorService.GetTutors(null, null)
                                 .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
@@ -64,13 +69,33 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+      
+        [AllowAnonymous]
+        public IActionResult ByLanguage(int id)
+        {
+            var language = _languageService.GetById(id);
+            if (language == null)
+                return NotFound();
 
+            var tutors = _tutorService.GetTutorsByLanguage(id);
+
+            var vm = new TutorsByLanguageViewModel
+            {
+                Language = language,
+                Tutors = tutors
+            };
+
+            return View(vm);
+        }
+
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
             var vm = new TutorCreateViewModel
             {
-                Languages = _service.GetTutors(null, null)
+                Languages = _tutorService.GetTutors(null, null)
                                     .Select(t => t.Language)
                                     .Distinct()
                                     .ToList()
@@ -79,12 +104,14 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Create(TutorCreateViewModel vm)
         {
             if (!ModelState.IsValid)
             {
-                vm.Languages = _service.GetTutors(null, null)
+                vm.Languages = _tutorService.GetTutors(null, null)
                                        .Select(t => t.Language)
                                        .Distinct()
                                        .ToList();
@@ -100,17 +127,18 @@ namespace LinguaFlowUI.Controllers
                 Availability = vm.Availability
             };
 
-            _service.CreateTutor(tutor);
+            _tutorService.CreateTutor(tutor);
 
             TempData["SuccessMessage"] = "Tutor created successfully.";
             return RedirectToAction("Index");
         }
 
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var tutor = _service.GetTutors(null, null)
+            var tutor = _tutorService.GetTutors(null, null)
                                 .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
@@ -124,7 +152,7 @@ namespace LinguaFlowUI.Controllers
                 Bio = tutor.Bio,
                 LanguageId = tutor.LanguageId,
                 Availability = tutor.Availability,
-                Languages = _service.GetTutors(null, null)
+                Languages = _tutorService.GetTutors(null, null)
                                     .Select(t => t.Language)
                                     .Distinct()
                                     .ToList()
@@ -133,12 +161,14 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Edit(TutorEditViewModel vm)
         {
             if (!ModelState.IsValid)
             {
-                vm.Languages = _service.GetTutors(null, null)
+                vm.Languages = _tutorService.GetTutors(null, null)
                                        .Select(t => t.Language)
                                        .Distinct()
                                        .ToList();
@@ -155,16 +185,18 @@ namespace LinguaFlowUI.Controllers
                 Availability = vm.Availability
             };
 
-            _service.UpdateTutor(tutor);
+            _tutorService.UpdateTutor(tutor);
 
             TempData["SuccessMessage"] = "Tutor updated successfully.";
             return RedirectToAction("Index");
         }
 
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var tutor = _service.GetTutors(null, null)
+            var tutor = _tutorService.GetTutors(null, null)
                                 .FirstOrDefault(t => t.Id == id);
 
             if (tutor == null)
@@ -183,10 +215,12 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
-            _service.DeleteTutor(id);
+            _tutorService.DeleteTutor(id);
 
             TempData["SuccessMessage"] = "Tutor deleted successfully.";
             return RedirectToAction("Index");
