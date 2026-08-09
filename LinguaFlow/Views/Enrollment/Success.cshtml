@@ -1,0 +1,17 @@
+﻿@model LinguaFlow.Models.ViewModels.EnrollmentSuccessViewModel
+
+<div class="container mt-5">
+
+    <div class="alert alert-success p-4 shadow">
+        <h2 class="fw-bold mb-3">Enrollment Successful!</h2>
+
+        <p>You have successfully enrolled to our <strong>@Model.Course.Title</strong> course with <strong>@Model.Tutor.FirstName @Model.Tutor.LastName</strong>.</p>
+
+        <p>Your tutor will contact you via email to schedule a meeting. After this meeting your tutor will confirm your enrollment and you will receive an email with the details for your payment.</p>
+
+        <p>Make your payment and start enjoying your course!</p>
+
+        <a href="/Student/Dashboard" class="btn btn-primary mt-3">Go to your Dashboard</a>
+    </div>
+
+</div>

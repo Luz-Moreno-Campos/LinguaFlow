@@ -34,6 +34,10 @@ namespace LinguaFlow.BLL
             return _tutorRepo.GetTutorsByLanguage(languageId);
         }
 
+        public Tutor GetById(int id)
+        {
+            return _tutorRepo.GetById(id);
+        }
 
         public void CreateTutor(Tutor tutor)
         {

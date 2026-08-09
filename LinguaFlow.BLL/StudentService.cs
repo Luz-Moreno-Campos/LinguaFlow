@@ -32,7 +32,12 @@ namespace LinguaFlow.BLL
             return _studentRepo.GetAll(searchName, languageId);
         }
 
-        
+        public Student GetByEmail(string email)
+        {
+            return _studentRepo.GetByEmail(email);
+        }
+
+
         public void CreateStudent(Student student)
         {
             _studentRepo.Add(student);

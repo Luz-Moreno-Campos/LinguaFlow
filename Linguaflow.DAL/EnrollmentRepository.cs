@@ -32,7 +32,11 @@ namespace Linguaflow.DAL
                 .ToList();
         }
 
-    
+        public void CreateEnrollment(Enrollment enrollment)
+        {
+            _context.Enrollments.Add(enrollment);
+            _context.SaveChanges();
+        }
         public Enrollment GetById(int id)
         {
             return _context.Enrollments

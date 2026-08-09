@@ -1,5 +1,6 @@
 ﻿using Linguaflow.DAL;
 using LinguaFlow.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace LinguaFlow.BLL
         {
             return _enrollmentRepo.GetById(id);
         }
+     
+
+        public void CreateEnrollment(Enrollment enrollment)
+        {
+            _enrollmentRepo.CreateEnrollment(enrollment);
+        }
+
 
         public void UpdateStatus(int id, string status)
         {

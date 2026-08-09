@@ -24,6 +24,12 @@ namespace Linguaflow.DAL
                            .FirstOrDefault(s => s.Id == id);
         }
 
+        public Student GetByEmail(string email)
+        {
+            return _context.Students.FirstOrDefault(s => s.Email == email);
+        }
+
+
 
         public List<Student> GetAll(string searchName, int? languageId)
         {

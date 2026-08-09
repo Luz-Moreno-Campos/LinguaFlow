@@ -53,6 +53,11 @@ namespace Linguaflow.DAL
                 .ToList();
         }
 
+        public Tutor GetById(int id)
+        {
+            return _context.Tutors.FirstOrDefault(t => t.Id == id);
+        }
+
 
         public void Add(Tutor tutor)
         {
