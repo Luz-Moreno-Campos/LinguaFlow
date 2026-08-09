@@ -10,11 +10,12 @@ namespace LinguaFlowUI.Controllers
     {
         private readonly TutorService _tutorService;
         private readonly LanguageService _languageService;
-
-        public TutorController(TutorService tutorService, LanguageService languageService)
+        private readonly CourseService _courseService;
+        public TutorController(TutorService tutorService, LanguageService languageService, CourseService courseService)
         {
             _tutorService = tutorService;
             _languageService = languageService;
+            _courseService = courseService;
         }
 
        
@@ -69,7 +70,7 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-      
+
         [AllowAnonymous]
         public IActionResult ByLanguage(int id)
         {
@@ -78,17 +79,20 @@ namespace LinguaFlowUI.Controllers
                 return NotFound();
 
             var tutors = _tutorService.GetTutorsByLanguage(id);
+            var courses = _courseService.GetAll();
 
-            var vm = new TutorsByLanguageViewModel
+            var vm = new ExploreTutorsViewModel
             {
                 Language = language,
-                Tutors = tutors
+                Tutors = tutors,
+                Courses = courses
             };
 
             return View(vm);
         }
 
-        
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()

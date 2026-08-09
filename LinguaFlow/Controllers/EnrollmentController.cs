@@ -20,7 +20,7 @@ namespace LinguaFlowUI.Controllers
         public IActionResult Index(string student, string tutor, int? course, string status)
         {
             var enrollments = _enrollmentService.GetAll();
-            var courses = _courseService.GetAll(); // carga cursos
+            var courses = _courseService.GetAll(); 
 
           
             if (!string.IsNullOrWhiteSpace(student))
@@ -101,5 +101,7 @@ namespace LinguaFlowUI.Controllers
             TempData["SuccessMessage"] = "Status updated successfully.";
             return RedirectToAction("Index");
         }
+
+
     }
 }
