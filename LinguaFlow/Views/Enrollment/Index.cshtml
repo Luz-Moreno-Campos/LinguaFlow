@@ -1,0 +1,114 @@
+﻿@model LinguaFlow.Models.ViewModels.EnrollmentIndexViewModel
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4 text-center">Enrollments</h2>
+    <form method="get" class="card p-3 shadow-sm mb-4">
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Search by student</label>
+                <input type="text" name="student" class="form-control form-control-sm"
+                       value="@Model.StudentSearch" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Search by tutor</label>
+                <input type="text" name="tutor" class="form-control form-control-sm"
+                       value="@Model.TutorSearch" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Search by course</label>
+                <select name="course" class="form-select form-select-sm">
+                    <option value="">All</option>
+
+                    @foreach (var c in Model.Courses)
+                    {
+                        <option value="@c.Id" selected="@(Model.CourseSearch == c.Id)">
+                            @c.Title
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Search by status</label>
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="Pending" selected="@(Model.StatusSearch == "Pending")">Pending</option>
+                    <option value="Active" selected="@(Model.StatusSearch == "Active")">Active</option>
+                    <option value="Cancelled" selected="@(Model.StatusSearch == "Cancelled")">Cancelled</option>
+                    <option value="Completed" selected="@(Model.StatusSearch == "Completed")">Completed</option>
+                    <option value="Expired" selected="@(Model.StatusSearch == "Expired")">Expired</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex justify-content-end">
+                <button class="btn btn-primary w-100">Search</button>
+            </div>
+
+        </div>
+    </form>
+
+
+
+
+   
+    <div class="card shadow-lg p-3">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Student</th>
+                    <th>Tutor</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th style="width: 150px;"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var e in Model.Enrollments)
+                {
+                    <tr>
+                        <td>@e.StudentName</td>
+                        <td>@e.TutorName</td>
+                        <td>@e.CourseTitle</td>
+                        <td>@e.EnrollmentDate.ToShortDateString()</td>
+
+                       
+                        <td>
+                            <form asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="id" value="@e.Id" />
+
+                                <select name="status" class="form-select form-select-sm">
+                                    <option value="Pending" selected="@(e.Status == "Pending")">Pending</option>
+                                    <option value="Active" selected="@(e.Status == "Active")">Active</option>
+                                    <option value="Cancelled" selected="@(e.Status == "Cancelled")">Cancelled</option>
+                                    <option value="Completed" selected="@(e.Status == "Completed")">Completed</option>
+                                    <option value="Expired" selected="@(e.Status == "Expired")">Expired</option>
+                                </select>
+
+                                <button class="btn btn-primary btn-sm">Save</button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <a asp-action="Details" asp-route-id="@e.Id"
+                               class="btn btn-outline-primary btn-sm w-100">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

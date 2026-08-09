@@ -10,17 +10,17 @@ namespace LinguaFlowUI.Controllers
     [Authorize(Roles = "Admin")]
     public class StudentController : Controller
     {
-        private readonly StudentService _service;
+        private readonly StudentService _studentService;
 
-        public StudentController(StudentService service)
+        public StudentController(StudentService studentService)
         {
-            _service = service;
+            _studentService = studentService;
         }
 
         [HttpGet]
         public IActionResult Index(string searchName, int? searchLanguageId)
         {
-            var students = _service.GetStudents(searchName, searchLanguageId);
+            var students = _studentService.GetStudents(searchName, searchLanguageId);
 
             var vm = new StudentIndexViewModel
             {
@@ -56,7 +56,7 @@ namespace LinguaFlowUI.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var student = _service.GetStudents(null, null)
+            var student = _studentService.GetStudents(null, null)
                                   .FirstOrDefault(s => s.Id == id);
 
             if (student == null)
@@ -112,7 +112,7 @@ namespace LinguaFlowUI.Controllers
                 Password = vm.Password
             };
 
-            _service.CreateStudent(student);
+            _studentService.CreateStudent(student);
 
             TempData["SuccessMessage"] = "Student created successfully.";
             return RedirectToAction("Index");
@@ -121,7 +121,7 @@ namespace LinguaFlowUI.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var student = _service.GetStudents(null, null)
+            var student = _studentService.GetStudents(null, null)
                                   .FirstOrDefault(s => s.Id == id);
 
             if (student == null)
@@ -145,20 +145,20 @@ namespace LinguaFlowUI.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            // 1. Obtener la entidad rastreada directamente de la BD
-            var student = _service.GetStudentById(vm.Id);
+           
+            var student = _studentService.GetStudentById(vm.Id);
 
             if (student == null)
                 return NotFound();
 
-            // 2. Modificar sus propiedades directamente
+            
             student.FirstName = vm.FirstName;
             student.LastName = vm.LastName;
             student.Email = vm.Email;
-            // La contraseña se mantiene intacta en 'student.Password'
+          
 
-            // 3. Guardar cambios (Update notificará al context)
-            _service.UpdateStudent(student);
+          
+            _studentService.UpdateStudent(student);
 
             TempData["SuccessMessage"] = "Student updated successfully.";
             return RedirectToAction("Index");
@@ -168,7 +168,7 @@ namespace LinguaFlowUI.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var student = _service.GetStudents(null, null)
+            var student = _studentService.GetStudents(null, null)
                                   .FirstOrDefault(s => s.Id == id);
 
             if (student == null)
@@ -202,7 +202,7 @@ namespace LinguaFlowUI.Controllers
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
-            _service.DeleteStudent(id);
+            _studentService.DeleteStudent(id);
 
             TempData["SuccessMessage"] = "Student deleted successfully.";
             return RedirectToAction("Index");
