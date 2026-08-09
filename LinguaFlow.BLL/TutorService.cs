@@ -10,41 +10,41 @@ namespace LinguaFlow.BLL
 {
     public class TutorService
     {
-        private readonly TutorRepository _repo;
+        private readonly TutorRepository _tutorRepo;
 
-        public TutorService(TutorRepository repo)
+        public TutorService(TutorRepository tutorRepo)
         {
-            _repo = repo;
+            _tutorRepo = tutorRepo;
         }
 
         
         public int CountTutors()
         {
-            return _repo.CountTutors();
+            return _tutorRepo.CountTutors();
         }
 
         
         public List<Tutor> GetTutors(string searchName, int? languageId)
         {
-            return _repo.GetAll(searchName, languageId);
+            return _tutorRepo.GetAll(searchName, languageId);
         }
 
         
         public void CreateTutor(Tutor tutor)
         {
-            _repo.Add(tutor);
+            _tutorRepo.Add(tutor);
         }
 
     
         public void UpdateTutor(Tutor tutor)
         {
-            _repo.Update(tutor);
+            _tutorRepo.Update(tutor);
         }
 
     
         public void DeleteTutor(int id)
         {
-            _repo.Delete(id);
+            _tutorRepo.Delete(id);
         }
     }
 }

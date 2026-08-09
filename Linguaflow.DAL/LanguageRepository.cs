@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LinguaFlow.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,20 @@ namespace Linguaflow.DAL
         public LanguageRepository(LinguaFlowContext context)
         {
             _context = context;
+        }
+
+        public List<Language> GetAll()
+        {
+            return _context.Languages
+                //.Include(l => l.Tutors) 
+                .ToList();
+        }
+
+        public Language GetById(int id)
+        {
+            return _context.Languages
+                .Include(l => l.Tutors)
+                .FirstOrDefault(l => l.Id == id);
         }
     }
 }

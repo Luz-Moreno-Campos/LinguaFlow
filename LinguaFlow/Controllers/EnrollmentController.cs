@@ -11,9 +11,9 @@ namespace LinguaFlowUI.Controllers
         private readonly EnrollmentService _enrollmentService;
         private readonly CourseService _courseService;
 
-        public EnrollmentController(EnrollmentService service, CourseService courseService)
+        public EnrollmentController(EnrollmentService enrollmentService, CourseService courseService)
         {
-            _enrollmentService = service;
+            _enrollmentService = enrollmentService;
             _courseService = courseService;
         }
 

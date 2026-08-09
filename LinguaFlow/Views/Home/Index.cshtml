@@ -1,8 +1,54 @@
-﻿@{
+﻿@using LinguaFlow.Models
+@model List<Language>
+
+@{
     ViewData["Title"] = "Home Page";
+
+    var flags = new Dictionary<string, string>
+    {
+        { "English", "/img/flags/uk.png" },
+        { "Spanish", "/img/flags/spain.png" },
+        { "French", "/img/flags/france.png" },
+        { "Italian", "/img/flags/italy.png" },
+        { "German", "/img/flags/germany.png" }
+    };
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Welcome to LinguaFlow!</h1>
+        <h3 class="lead"><strong>One-on-one courses tailored to your needs</strong></h3>
+
+        <h2>Start learning in 3 simple steps:</h2>
+        <p class="mt-4">
+            <strong> Choose a Language → Pick your favourite Tutor → Enroll in the course of your choice </strong><br /> 
+        </p>
+    </div>
+
+    <h3 class="fw-semibold mb-4 text-center">Choose a Language now  and unlock your potential!</h3>
+
+    <div class="row g-4 justify-content-center">
+        @foreach (var lang in Model)
+        {
+            <div class="col-md-2 col-sm-4 col-6">
+                <div class="card shadow-sm text-center p-3">
+
+                    <img src="@flags[lang.Name]"
+                         class="img-fluid mb-3"
+                         style="max-height: 60px; width: auto; display: block; margin: 0 auto;" />
+
+                    <h5 class="fw-bold">@lang.Name</h5>
+
+                    <a asp-controller="Tutor" asp-action="ByLanguage" asp-route-id="@lang.Id"
+                       class="btn btn-primary mt-3 w-100">
+                        Explore Tutors
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
 </div>
+
+

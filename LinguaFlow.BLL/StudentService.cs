@@ -10,44 +10,44 @@ namespace LinguaFlow.BLL
 {
     public class StudentService
     {
-        private readonly StudentRepository _repo;
+        private readonly StudentRepository _studentRepo;
 
-        public StudentService(StudentRepository repo)
+        public StudentService(StudentRepository studentRepo)
         {
-            _repo = repo;
+            _studentRepo = studentRepo;
         }
 
         public int CountStudents()
         {
-            return _repo.CountStudents();
+            return _studentRepo.CountStudents();
         }
 
         public Student GetStudentById(int id)
         {
-            return _repo.GetById(id);
+            return _studentRepo.GetById(id);
         }
 
         public List<Student> GetStudents(string searchName, int? languageId)
         {
-            return _repo.GetAll(searchName, languageId);
+            return _studentRepo.GetAll(searchName, languageId);
         }
 
         
         public void CreateStudent(Student student)
         {
-            _repo.Add(student);
+            _studentRepo.Add(student);
         }
 
         
         public void UpdateStudent(Student student)
         {
-            _repo.Update(student);
+            _studentRepo.Update(student);
         }
 
         
         public void DeleteStudent(int id)
         {
-            _repo.Delete(id);
+            _studentRepo.Delete(id);
         }
     }
 }

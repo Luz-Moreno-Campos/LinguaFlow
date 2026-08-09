@@ -10,21 +10,21 @@ namespace LinguaFlow.BLL
 {
     public class CourseService
     {
-        private readonly CourseRepository _repo;
+        private readonly CourseRepository _courseRepo;
 
-        public CourseService(CourseRepository repo)
+        public CourseService(CourseRepository courseRepo)
         {
-            _repo = repo;
+            _courseRepo = courseRepo;
         }
 
         public List<Course> GetAll()
         {
-            return _repo.GetAll();
+            return _courseRepo.GetAll();
         }
 
         public Course GetById(int id)
         {
-            return _repo.GetById(id);
+            return _courseRepo.GetById(id);
         }
     }
 }

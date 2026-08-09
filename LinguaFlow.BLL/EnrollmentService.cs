@@ -10,26 +10,26 @@ namespace LinguaFlow.BLL
 {
     public class EnrollmentService
     {
-        private readonly EnrollmentRepository _repo;
+        private readonly EnrollmentRepository _enrollmentRepo;
 
-        public EnrollmentService(EnrollmentRepository repo)
+        public EnrollmentService(EnrollmentRepository enrollmentRepo)
         {
-            _repo = repo;
+            _enrollmentRepo = enrollmentRepo;
         }
 
         public List<Enrollment> GetAll()
         {
-            return _repo.GetAll();
+            return _enrollmentRepo.GetAll();
         }
 
         public Enrollment GetById(int id)
         {
-            return _repo.GetById(id);
+            return _enrollmentRepo.GetById(id);
         }
 
         public void UpdateStatus(int id, string status)
         {
-            _repo.UpdateStatus(id, status);
+            _enrollmentRepo.UpdateStatus(id, status);
         }
     }
 }
