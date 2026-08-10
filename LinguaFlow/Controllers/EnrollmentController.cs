@@ -64,10 +64,7 @@ namespace LinguaFlowUI.Controllers
                 {
                     Id = e.Id,
                     StudentName = e.Student.FirstName + " " + e.Student.LastName,
-                    TutorName = e.Course.Tutors.Any()
-                    ? e.Course.Tutors.First().FirstName + " " + e.Course.Tutors.First().LastName
-                    : "No tutor assigned",
-
+                    TutorName =  e.Tutor.FirstName + " " + e.Tutor.LastName,
                     CourseTitle = e.Course.Title,
                     EnrollmentDate = e.EnrollmentDate,
                     Status = e.Status
@@ -90,12 +87,12 @@ namespace LinguaFlowUI.Controllers
             if (student == null)
                 return Unauthorized();
 
-            if (_enrollmentService.IsEnrolled(student.Id, courseId))
+            if (_enrollmentService.IsEnrolled(student.Id, courseId, tutorId))
             {
-                TempData["ErrorMessage"] = "You are already enrolled in this course.";
+                TempData["EnrollmentError"] = "You are already enrolled in this course.";
 
-          
-                return RedirectToAction("Explore", "Tutor");
+
+                return Redirect(Request.Headers.Referer.ToString());
             }
 
 
@@ -130,6 +127,8 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+
+
         [Authorize(Roles = "Admin")]
         public IActionResult Details(int id)
         {
@@ -142,7 +141,7 @@ namespace LinguaFlowUI.Controllers
             {
                 Id = e.Id,
                 StudentName = e.Student.FirstName + " " + e.Student.LastName,
-                TutorName = e.Course.Tutors.First().FirstName + " " + e.Course.Tutors.First().LastName,
+                TutorName = e.Tutor.FirstName + " " + e.Tutor.LastName,
                 CourseTitle = e.Course.Title,
                 EnrollmentDate = e.EnrollmentDate,
                 Status = e.Status,

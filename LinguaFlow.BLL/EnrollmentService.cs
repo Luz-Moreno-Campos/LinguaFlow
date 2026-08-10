@@ -40,9 +40,9 @@ namespace LinguaFlow.BLL
             _enrollmentRepo.UpdateStatus(id, status);
         }
 
-        public bool IsEnrolled(int studentId, int courseId)
+        public bool IsEnrolled(int studentId, int courseId, int tutorId)
         {
-            return _enrollmentRepo.Exists(studentId, courseId);
+            return _enrollmentRepo.Exists(studentId, courseId, tutorId);
                
         }
     }

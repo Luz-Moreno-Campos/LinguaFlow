@@ -22,13 +22,13 @@ namespace Linguaflow.DAL
             return _context.Enrollments.Count();
         }
 
-      
+
         public List<Enrollment> GetAll()
         {
             return _context.Enrollments
                 .Include(e => e.Student)
                 .Include(e => e.Course)
-                    .ThenInclude(c => c.Tutors)
+                 .Include(e => e.Tutor)
                 .ToList();
         }
 
@@ -42,11 +42,11 @@ namespace Linguaflow.DAL
             return _context.Enrollments
                 .Include(e => e.Student)
                 .Include(e => e.Course)
-                    .ThenInclude(c => c.Tutors)
+                 .Include(e => e.Tutor)
                 .FirstOrDefault(e => e.Id == id);
         }
 
-      
+
         public void UpdateStatus(int id, string status)
         {
             var enrollment = _context.Enrollments.Find(id);
@@ -58,11 +58,14 @@ namespace Linguaflow.DAL
             }
         }
 
-        public bool Exists(int studentId, int courseId)
+        public bool Exists(int studentId, int courseId, int tutorId)
         {
             return _context.Enrollments
-                .Any(e => e.StudentId == studentId && e.CourseId == courseId);
+                .Any(e => e.StudentId == studentId
+                       && e.CourseId == courseId
+                       && e.TutorId == tutorId
+                       && e.Status != "Cancelled");
         }
-    }
 
+    }
 }
