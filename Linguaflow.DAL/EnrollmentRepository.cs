@@ -57,6 +57,12 @@ namespace Linguaflow.DAL
                 _context.SaveChanges();
             }
         }
+
+        public bool Exists(int studentId, int courseId)
+        {
+            return _context.Enrollments
+                .Any(e => e.StudentId == studentId && e.CourseId == courseId);
+        }
     }
 
 }

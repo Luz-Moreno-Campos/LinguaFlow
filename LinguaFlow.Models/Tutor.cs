@@ -31,6 +31,10 @@ namespace LinguaFlow.Models
         //One-to-many: a tutor can have many fees, each fee belongs to one tutor
         public ICollection<TutorFee> TutorFees { get; set; } = new List<TutorFee>();
 
+
+        //One-to-many: a tutor can have many enrollments, each enrollment belongs to one tutor
+        public List<Enrollment> Enrollments { get; set; }
+
     }
 
 }

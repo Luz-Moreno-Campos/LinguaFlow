@@ -2,22 +2,31 @@
 
 <style>
     .tutor-card {
-        min-height: 320px; 
+        min-height: 320px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 </style>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="container mt-4">
 
-    <h2 class="fw-bold mb-4">Select a  Course to Learn @Model.Language.Name</h2>
+    <h2 class="fw-bold mb-4">Select a Course to Learn @Model.Language.Name</h2>
 
-   
     <div class="mb-4">
         <label class="fw-semibold mb-3">Select a course:</label>
 
+     
         <select id="courseSelect" class="form-select mb-3" onchange="updateDescription()">
+            <option value="" selected disabled>-- Choose a course --</option>
             @foreach (var course in Model.Courses)
             {
                 <option value="@course.Id" data-description="@course.Description">
@@ -26,9 +35,9 @@
             }
         </select>
 
-        <h3 class="fw-bold mb-3"> Course decription </h3>
+        <h3 class="fw-bold mb-3">Course Description</h3>
         <div id="courseDescription" class="p-3 border rounded bg-light" style="min-height:120px;">
-           
+            <span class="text-muted">Please select a course above to see its details.</span>
         </div>
     </div>
 
@@ -42,15 +51,16 @@
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="tutor-card shadow p-3">
 
-                    <h5 class="fw-bold">@tutor.FirstName @tutor.LastName</h5>
-                    <p class="text-muted">@tutor.Bio</p>
+                    <div>
+                        <h5 class="fw-bold">@tutor.FirstName @tutor.LastName</h5>
+                        <p class="text-muted">@tutor.Bio</p>
+                        <p><strong>Availability:</strong> @tutor.Availability</p>
+                    </div>
 
-                    <p><strong>Availability:</strong> @tutor.Availability</p>
-
-                    <form asp-controller="Enrollment" asp-action="Enroll" method="post">
+                    <form asp-controller="Enrollment" asp-action="Enroll" method="post" onsubmit="return validateSelection()">
+                      
                         <input type="hidden" name="tutorId" value="@tutor.Id" />
-                        <input type="hidden" name="courseId" class="selectedCourseId" />
-
+                        <input type="hidden" name="courseId" class="selectedCourseId" value="" />
                         <button type="submit" class="btn btn-primary w-100 mt-2">
                             Enroll
                         </button>
@@ -60,20 +70,30 @@
             </div>
         }
     </div>
-
 </div>
+@section Scripts {
+    <script>
+        function updateDescription() {
+            const select = document.getElementById("courseSelect");
+            const selectedOption = select.options[select.selectedIndex];
 
-<script>
- 
-    function updateDescription() {
-        const select = document.getElementById("courseSelect");
-        const desc = select.options[select.selectedIndex].dataset.description;
-        document.getElementById("courseDescription").innerText = desc;
+            const desc = selectedOption.getAttribute("data-description") || "";
+            const courseId = select.value;
 
-        document.querySelectorAll(".selectedCourseId").forEach(input => {
-            input.value = select.value;
-        });
-    }
+            document.getElementById("courseDescription").innerText = desc;
 
-    document.addEventListener("DOMContentLoaded", updateDescription);
-</script>
+            document.querySelectorAll(".selectedCourseId").forEach(input => {
+                input.value = courseId;
+            });
+        }
+
+        function validateSelection() {
+            const select = document.getElementById("courseSelect");
+            if (!select.value) {
+                alert("Please select a course before enrolling with a tutor.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

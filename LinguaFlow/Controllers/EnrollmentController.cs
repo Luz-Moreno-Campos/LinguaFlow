@@ -25,7 +25,6 @@ namespace LinguaFlowUI.Controllers
             _tutorService = tutorService;
         }
 
-        // ADMIN ONLY
         [Authorize(Roles = "Admin")]
         public IActionResult Index(string student, string tutor, int? course, string status)
         {
@@ -78,7 +77,7 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-        // STUDENT ONLY
+   
         [Authorize(Roles = "Student")]
         [HttpPost]
         public IActionResult Enroll(int tutorId, int courseId)
@@ -90,6 +89,15 @@ namespace LinguaFlowUI.Controllers
 
             if (student == null)
                 return Unauthorized();
+
+            if (_enrollmentService.IsEnrolled(student.Id, courseId))
+            {
+                TempData["ErrorMessage"] = "You are already enrolled in this course.";
+
+          
+                return RedirectToAction("Explore", "Tutor");
+            }
+
 
             var enrollment = new Enrollment
             {
@@ -105,7 +113,7 @@ namespace LinguaFlowUI.Controllers
             return RedirectToAction("Success", new { tutorId, courseId });
         }
 
-        // STUDENT ONLY
+
         [Authorize(Roles = "Student")]
         [HttpGet]
         public IActionResult Success(int tutorId, int courseId)
@@ -122,7 +130,6 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-        // ADMIN ONLY
         [Authorize(Roles = "Admin")]
         public IActionResult Details(int id)
         {
@@ -146,7 +153,7 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-        // ADMIN ONLY
+      
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult UpdateStatus(int id, string status)

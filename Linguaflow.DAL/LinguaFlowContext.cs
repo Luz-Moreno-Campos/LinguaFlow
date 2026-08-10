@@ -107,7 +107,7 @@ namespace Linguaflow.DAL
 
             // this index with unique constraint prevents students from enrolling in the same course twice
             modelBuilder.Entity<Enrollment>()
-               .HasIndex(e => new { e.StudentId, e.CourseId })
+               .HasIndex(e => new { e.StudentId, e.CourseId,e.TutorId })
                .IsUnique();
 
             modelBuilder.Entity<Enrollment>()
@@ -186,6 +186,12 @@ namespace Linguaflow.DAL
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // TUTOR - ENROLLMENT (1:N)
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Tutor)
+                .WithMany(t => t.Enrollments) // (Asegúrate de que la clase Tutor tenga public List<Enrollment> Enrollments { get; set; })
+                .HasForeignKey(e => e.TutorId)
+                .OnDelete(DeleteBehavior.Restrict);
             // COURSE - ENROLLMENT (1:N)
             modelBuilder.Entity<Enrollment>()
                 .HasOne(e => e.Course)
