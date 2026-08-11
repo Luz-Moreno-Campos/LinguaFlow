@@ -6,48 +6,68 @@
 
 <div class="container py-4">
 
-    <h2 class="fw-bold mb-4 text-center">Enrollment Details</h2>
-
     <div class="d-flex justify-content-center w-100">
 
-        <div class="card shadow-lg p-4 w-100" style="max-width: 600px;">
+        <div class="card shadow-lg border-0 rounded-3 w-100" style="max-width: 650px;">
 
-            <div class="mb-3">
-                <label class="fw-semibold">Student</label>
-                <p class="form-control">@Model.StudentName</p>
+        
+            <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+                <h3 class="fw-bold mb-0">Enrollment Details</h3>
             </div>
 
-            <div class="mb-3">
-                <label class="fw-semibold">Tutor</label>
-                <p class="form-control">@Model.TutorName</p>
+            <div class="card-body p-4">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Student</span>
+                        <span class="fs-5 text-dark fw-medium">@Model.StudentName</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Tutor</span>
+                        <span class="fs-5 text-dark fw-medium">@Model.TutorName</span>
+                    </div>
+
+                    <hr class="text-muted opacity-25 my-3" />
+
+                    <div class="col-md-6">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Course</span>
+                        <span class="fs-5 text-dark fw-medium">@Model.CourseTitle</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Enrollment Date</span>
+                        <span class="fs-5 text-dark fw-medium">@Model.EnrollmentDate.ToShortDateString()</span>
+                    </div>
+
+                    <hr class="text-muted opacity-25 my-3" />
+
+                    <div class="col-md-4">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Status</span>
+                        <span class="fs-5 text-dark fw-bold">@Model.Status</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Payment</span>
+                        <span class="fs-5 fw-bold text-success">$@Model.Payment.ToString("N2")</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Tutor Fee</span>
+                        <span class="fs-5 fw-bold text-primary">$@Model.TutorFee.ToString("N2")</span>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label class="fw-semibold">Course</label>
-                <p class="form-control">@Model.CourseTitle</p>
+  
+            <div class="card-footer bg-light p-3 text-end rounded-bottom">
+                <a asp-action="Index" class="btn btn-outline-secondary px-4 fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
             </div>
-
-            <div class="mb-3">
-                <label class="fw-semibold">Enrollment Date</label>
-                <p class="form-control">@Model.EnrollmentDate.ToShortDateString()</p>
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-semibold">Status</label>
-                <p class="form-control">@Model.Status</p>
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-semibold">Payment</label>
-                <p class="form-control">$@Model.Payment</p>
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-semibold">Tutor Fee</label>
-                <p class="form-control">$@Model.TutorFee</p>
-            </div>
-
-            <a asp-action="Index" class="btn btn-secondary w-100 mt-3">Back</a>
 
         </div>
 

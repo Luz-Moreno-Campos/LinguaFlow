@@ -41,8 +41,10 @@ namespace Linguaflow.DAL
         {
             return _context.Enrollments
                 .Include(e => e.Student)
+                .Include(e => e.Tutor)
                 .Include(e => e.Course)
-                 .Include(e => e.Tutor)
+                .Include(e => e.Payment)
+                .Include(e => e.TutorFee) 
                 .FirstOrDefault(e => e.Id == id);
         }
 

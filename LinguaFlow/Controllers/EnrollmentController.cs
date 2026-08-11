@@ -74,7 +74,7 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-   
+
         [Authorize(Roles = "Student")]
         [HttpPost]
         public IActionResult Enroll(int tutorId, int courseId)
@@ -90,19 +90,38 @@ namespace LinguaFlowUI.Controllers
             if (_enrollmentService.IsEnrolled(student.Id, courseId, tutorId))
             {
                 TempData["EnrollmentError"] = "You are already enrolled in this course.";
-
-
                 return Redirect(Request.Headers.Referer.ToString());
             }
 
+            
+            var course = _courseService.GetById(courseId);
 
+           
             var enrollment = new Enrollment
             {
                 StudentId = student.Id,
                 TutorId = tutorId,
                 CourseId = courseId,
                 EnrollmentDate = DateTime.Now,
-                Status = "Pending"
+                Status = "Pending",
+
+             
+                Payment = new Payment
+                {
+                    Amount = course.Price,
+                    Status = "Pending",
+                    Method = "Pending",
+                    CreatedAt = DateTime.UtcNow
+                },
+
+          
+                TutorFee = new TutorFee
+                {
+                    TutorId = tutorId,
+                    FeeAmount = course.Price * 0.70m, 
+                    Status = "Pending",
+                    CreatedAt = DateTime.UtcNow
+                }
             };
 
             _enrollmentService.CreateEnrollment(enrollment);
@@ -146,7 +165,7 @@ namespace LinguaFlowUI.Controllers
                 EnrollmentDate = e.EnrollmentDate,
                 Status = e.Status,
                 Payment = e.Payment?.Amount ?? 0,
-                TutorFee = e.TutorFee.FeeAmount
+                TutorFee = e.TutorFee?.FeeAmount ?? 0
             };
 
             return View(vm);

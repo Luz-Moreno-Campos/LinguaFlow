@@ -1,4 +1,6 @@
-﻿@model LinguaFlow.Models.ViewModels.EnrollmentIndexViewModel
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model LinguaFlow.Models.ViewModels.EnrollmentIndexViewModel
+
 
 @{
     Layout = "_AdminLayout";
@@ -81,9 +83,9 @@
                         <td>@e.CourseTitle</td>
                         <td>@e.EnrollmentDate.ToShortDateString()</td>
 
-                       
                         <td>
-                            <form asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                            <!-- Agregamos asp-controller aquí para que no rompa la celda -->
+                            <form asp-controller="Enrollment" asp-action="UpdateStatus" method="post" class="d-flex gap-2">
                                 <input type="hidden" name="id" value="@e.Id" />
 
                                 <select name="status" class="form-select form-select-sm">
@@ -99,7 +101,10 @@
                         </td>
 
                         <td>
-                            <a asp-action="Details" asp-route-id="@e.Id"
+                           
+                            <a asp-controller="Enrollment"
+                               asp-action="Details"
+                               asp-route-id="@e.Id"
                                class="btn btn-outline-primary btn-sm w-100">
                                 Details
                             </a>
