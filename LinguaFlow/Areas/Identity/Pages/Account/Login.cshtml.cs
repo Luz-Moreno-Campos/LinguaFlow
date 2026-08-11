@@ -110,7 +110,7 @@ public class LoginModel : PageModel
 
         if (ModelState.IsValid)
         {
-            // 1. Iniciar sesión directamente por Email/UserName
+          
             var result = await _signInManager.PasswordSignInAsync(
                 Input.Email,
                 Input.Password,
@@ -121,22 +121,26 @@ public class LoginModel : PageModel
             {
                 _logger.LogInformation("User logged in.");
 
-                // 2. Buscar al usuario autenticado
+             
                 var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
 
                 if (user != null)
                 {
-                    // 3. Verificar si es Admin
+                
                     var isAdmin = await _signInManager.UserManager.IsInRoleAsync(user, "Admin");
 
                     if (isAdmin)
                     {
-                        // Redirección explícita fuera del Área 'Identity' hacia Views/Admin/Home.cshtml
+                        
                         return RedirectToAction("Home", "Admin", new { area = "" });
+                    }
+
+                    if (user != null && await _signInManager.UserManager.IsInRoleAsync(user, "Student"))
+                    {
+                        return RedirectToAction("Index", "Home"); 
                     }
                 }
 
-                // Si no es admin (Tutor o Student)
                 return LocalRedirect(returnUrl);
             }
 
