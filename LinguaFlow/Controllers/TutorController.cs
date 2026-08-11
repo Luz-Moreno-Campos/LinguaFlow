@@ -88,7 +88,7 @@ namespace LinguaFlowUI.Controllers
                 Courses = courses
             };
 
-            return View(vm);
+            return View("ExploreByLanguage", vm);
         }
 
 

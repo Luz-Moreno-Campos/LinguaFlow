@@ -1,7 +1,6 @@
 ﻿using LinguaFlow.BLL;
 using LinguaFlow.Models;
 using LinguaFlow.Models.ViewModels;
-using LinguaFlow.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,12 +25,10 @@ namespace LinguaFlowUI.Controllers
             {
                 SearchName = searchName,
                 SearchLanguageId = searchLanguageId,
-
-                
                 Languages = students
                     .SelectMany(s => s.Enrollments
-                        .SelectMany(e => e.Course.Tutors
-                            .Select(t => t.Language)))
+                        .Where(e => e.Tutor != null && e.Tutor.Language != null)
+                        .Select(e => e.Tutor.Language))
                     .Distinct()
                     .ToList(),
 
@@ -41,10 +38,9 @@ namespace LinguaFlowUI.Controllers
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                     Email = s.Email,
-
                     LanguageNames = s.Enrollments
-                        .SelectMany(e => e.Course.Tutors
-                            .Select(t => t.Language.Name))
+                        .Where(e => e.Tutor != null && e.Tutor.Language != null)
+                        .Select(e => e.Tutor.Language.Name)
                         .Distinct()
                         .ToList()
                 }).ToList()
@@ -69,8 +65,10 @@ namespace LinguaFlowUI.Controllers
                 LastName = student.LastName,
                 Email = student.Email,
 
+               
                 Languages = student.Enrollments
-                    .GroupBy(e => e.Course.Tutors.First().Language.Name)
+                    .Where(e => e.Tutor != null && e.Tutor.Language != null)
+                    .GroupBy(e => e.Tutor.Language.Name)
                     .Select(g => new StudentLanguageInfo
                     {
                         LanguageName = g.Key,
@@ -79,8 +77,7 @@ namespace LinguaFlowUI.Controllers
                                    .Distinct()
                                    .ToList(),
 
-                        Tutors = g.SelectMany(e => e.Course.Tutors)
-                                  .Select(t => $"{t.FirstName} {t.LastName}")
+                        Tutors = g.Select(e => $"{e.Tutor.FirstName} {e.Tutor.LastName}")
                                   .Distinct()
                                   .ToList()
                     })
@@ -90,13 +87,11 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-
         [HttpGet]
         public IActionResult Create()
         {
             return View(new StudentCreateViewModel());
         }
-
 
         [HttpPost]
         public IActionResult Create(StudentCreateViewModel vm)
@@ -145,25 +140,20 @@ namespace LinguaFlowUI.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-           
             var student = _studentService.GetStudentById(vm.Id);
 
             if (student == null)
                 return NotFound();
 
-            
             student.FirstName = vm.FirstName;
             student.LastName = vm.LastName;
             student.Email = vm.Email;
-          
 
-          
             _studentService.UpdateStudent(student);
 
             TempData["SuccessMessage"] = "Student updated successfully.";
             return RedirectToAction("Index");
         }
-
 
         [HttpGet]
         public IActionResult Delete(int id)
@@ -181,14 +171,15 @@ namespace LinguaFlowUI.Controllers
                 LastName = student.LastName,
                 Email = student.Email,
 
+               
                 Languages = student.Enrollments
-                    .GroupBy(e => e.Course.Tutors.First().Language.Name)
+                    .Where(e => e.Tutor != null && e.Tutor.Language != null)
+                    .GroupBy(e => e.Tutor.Language.Name)
                     .Select(g => new StudentLanguageInfo
                     {
                         LanguageName = g.Key,
                         Courses = g.Select(e => e.Course.Title).Distinct().ToList(),
-                        Tutors = g.SelectMany(e => e.Course.Tutors)
-                                  .Select(t => $"{t.FirstName} {t.LastName}")
+                        Tutors = g.Select(e => $"{e.Tutor.FirstName} {e.Tutor.LastName}")
                                   .Distinct()
                                   .ToList()
                     })
@@ -198,13 +189,13 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
-
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
             _studentService.DeleteStudent(id);
 
             TempData["SuccessMessage"] = "Student deleted successfully.";
+
             return RedirectToAction("Index");
         }
     }

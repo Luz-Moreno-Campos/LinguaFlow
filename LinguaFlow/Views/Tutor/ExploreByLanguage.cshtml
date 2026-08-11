@@ -65,9 +65,22 @@
                       
                         <input type="hidden" name="tutorId" value="@tutor.Id" />
                         <input type="hidden" name="courseId" class="selectedCourseId" value="" />
-                        <button type="submit" class="btn btn-primary w-100 mt-2">
-                            Enroll
-                        </button>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                           
+                            <button type="submit" class="btn btn-primary w-100 mt-2">
+                                Enroll
+                            </button>
+                        }
+                        else
+                        {
+                            <a asp-area="Identity"
+                               asp-page="/Account/Login"
+                               asp-route-returnUrl="@Context.Request.Path"
+                               class="btn btn-outline-primary w-100 mt-2">
+                                Log in to Enroll
+                            </a>
+                        }
                     </form>
 
                 </div>
