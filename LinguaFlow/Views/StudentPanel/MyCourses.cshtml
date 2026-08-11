@@ -1,0 +1,30 @@
+﻿@model List<LinguaFlow.Models.ViewModels.StudentCourseViewModel>
+
+@{
+    Layout = "_UserPanelLayout";
+}
+
+<h2>My Courses</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Tutor</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.CourseTitle</td>
+                <td>@c.TutorName</td>
+                <td>@c.EnrollmentDate.ToShortDateString()</td>
+                <td>@c.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

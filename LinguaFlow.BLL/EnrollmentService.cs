@@ -23,6 +23,12 @@ namespace LinguaFlow.BLL
             return _enrollmentRepo.GetAll();
         }
 
+        public List<Enrollment> GetByStudentId(int studentId)
+        {
+            return _enrollmentRepo.GetByStudentId(studentId);
+        }
+
+
         public Enrollment GetById(int id)
         {
             return _enrollmentRepo.GetById(id);

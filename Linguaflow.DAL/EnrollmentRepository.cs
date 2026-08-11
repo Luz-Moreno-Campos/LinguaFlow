@@ -32,6 +32,17 @@ namespace Linguaflow.DAL
                 .ToList();
         }
 
+        public List<Enrollment> GetByStudentId(int studentId)
+        {
+            return _context.Enrollments
+                .Include(e => e.Student)
+                .Include(e => e.Course)
+                    .ThenInclude(c => c.Tutors)
+                .Where(e => e.StudentId == studentId)
+                .ToList();
+        }
+
+
         public void CreateEnrollment(Enrollment enrollment)
         {
             _context.Enrollments.Add(enrollment);
