@@ -7,12 +7,12 @@
 
         <p>You have successfully enrolled to our <strong>@Model.Course.Title</strong> course with <strong>@Model.Tutor.FirstName @Model.Tutor.LastName</strong>.</p>
 
-        <p>Your tutor will contact you via email to schedule a meeting. After this meeting your tutor will confirm your enrollment and you will receive an email with the details for your payment.</p>
+        <p>Your tutor will contact you via email to schedule a meeting. You will also receive an email with the details for your payment. </p>
 
-        <p>Make your payment and start enjoying your course!</p>
+        <p>After meeting your tutor, confirm your enrollment, make your payment and start enjoying your course!</p>
 
-        <a href="/Student/Dashboard" class="btn btn-primary mt-3">Go to your Dashboard</a>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+        <a asp-controller="StudentPanel" asp-action="MyCourses" class="btn btn-primary mt-3">Go to MyCourses</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary mt-3 ms-3">
             Explore More Languages
         </a>
     </div>

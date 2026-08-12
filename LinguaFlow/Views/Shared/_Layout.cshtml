@@ -10,10 +10,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom shadow-sm mb-3" style="height: 56px;">
+        <nav class="navbar navbar-expand-sm navbar-light border-bottom shadow-sm mb-3"
+             style="height: 56px; background-color: #5585b5;">
+
 
             <div class="container-fluid">
-                <h3 class="nav-link text-dark" asp-area="">LinguaFlow </h3>
+                <h3 class="nav-link text-light" asp-area="">LinguaFlow </h3>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,24 +26,24 @@
                      
                         
                         <li class="nav-item">
-                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                      
                     
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="StudentPanel" asp-action="MyCourses">My Courses</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="StudentPanel" asp-action="MyCourses">My Courses</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="StudentPanel" asp-action="MyProfile">My Profile</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="StudentPanel" asp-action="MyProfile">My Profile</a>
                             </li>
                         }
 
                     
                         <li class="nav-item">
-                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
                     </ul>
@@ -57,8 +59,8 @@
         </div>
     </main>
 
-
-    <footer class="border-top footer text-muted fixed-bottom bg-white py-4">
+    <footer class="footer text-muted fixed-bottom bg-light border-top shadow-sm py-4"
+    >
         <div class="container">
             &copy; 2026 - LinguaFlow - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

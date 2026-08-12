@@ -29,7 +29,7 @@ namespace LinguaFlowUI.Controllers
             {
                 EnrollmentId = e.Id,
                 CourseTitle = e.Course.Title,
-                TutorName = e.Course.Tutors.First().FirstName + " " + e.Course.Tutors.First().LastName,
+                TutorName = e.Tutor.FirstName + " " + e.Tutor.LastName,
                 EnrollmentDate = e.EnrollmentDate,
                 Status = e.Status
             }).ToList();

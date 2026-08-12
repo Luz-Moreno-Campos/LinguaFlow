@@ -37,7 +37,7 @@ namespace Linguaflow.DAL
             return _context.Enrollments
                 .Include(e => e.Student)
                 .Include(e => e.Course)
-                    .ThenInclude(c => c.Tutors)
+                .Include(e => e.Tutor)
                 .Where(e => e.StudentId == studentId)
                 .ToList();
         }

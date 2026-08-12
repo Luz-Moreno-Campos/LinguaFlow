@@ -78,7 +78,7 @@ namespace LinguaFlowUI
                             await roleManager.CreateAsync(new IdentityRole(role));
                         }
                     }
-                    // Create an admin user
+                    // Creates an admin user
                     IdentityUser adminUser = new IdentityUser
                     {
                         UserName = "admin@linguaflow.com",
@@ -91,7 +91,7 @@ namespace LinguaFlowUI
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                     }
 
-                    // Create a tutor user
+                    // Creates a tutor user - This user  will be implemented shortly, as I deveop the Tutor panel
                     IdentityUser tutorUser = new IdentityUser
                     {
                         UserName = "tutor@linguaflow.com",
@@ -104,7 +104,7 @@ namespace LinguaFlowUI
                         await userManager.AddToRoleAsync(tutorUser, "Tutor");
                     }
 
-                    // Create a student user
+                    // Creates a student user
                     IdentityUser studentUser = new IdentityUser
                     {
                         UserName = "student@linguaflow.com",

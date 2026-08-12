@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LinguaFlow Admin</title>
+    <title>@ViewData["Title"] - LinguaFlow Users</title>
 
  
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -18,11 +18,11 @@
 
     <header>
        
-        <nav class="navbar navbar-expand-sm navbar-light border-bottom shadow-sm mb-3" style="background-color: #d8d8d8; height: 56px;">
+        <nav class="navbar navbar-expand-sm navbar-light border-bottom shadow-sm mb-3" style="background-color: #5585b5; height: 56px;">
 
             <div class="container-fluid">
 
-                <h3 class="nav-link text-dark" asp-area="" >LinguaFlow </h3>
+                <h3 class="nav-link text-light" asp-area="" >LinguaFlow </h3>
 
                 <!-- This button appears only on small screens (mobile/tablet).
                      It toggles the navigation menu open/closed when the navbar is collapsed.
@@ -43,19 +43,19 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="Admin" asp-action="Home">Metrics</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="Admin" asp-action="Home">Metrics</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="Tutor" asp-action="Index">Tutors</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="Tutor" asp-action="Index">Tutors</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="Student" asp-action="Index">Students</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="Student" asp-action="Index">Students</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="Enrollment" asp-action="Index">Enrollments</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="Enrollment" asp-action="Index">Enrollments</a>
                             </li>
                         }
 
@@ -63,15 +63,15 @@
                         @if (User.IsInRole("Student"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="StudentPanel" asp-action="MyCourses">My Courses</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="StudentPanel" asp-action="MyCourses">My Courses</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="StudentPanel" asp-action="MyProfile">My Profile</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="StudentPanel" asp-action="MyProfile">My Profile</a>
                             </li>
                         }
 
@@ -79,11 +79,11 @@
                         @if (User.IsInRole("Tutor"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="TutorPanel" asp-action="MyStudents">My Students</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="TutorPanel" asp-action="MyStudents">My Students</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-controller="TutorPanel" asp-action="MyProfile">My Profile</a>
+                                <a class="nav-link text-light fw-bold" asp-controller="TutorPanel" asp-action="MyProfile">My Profile</a>
                             </li>
                         }
 
@@ -91,7 +91,7 @@
 
 
                     <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
-                        <button type="submit" class="nav-link btn btn-link text-dark fw-bold">Logout</button>
+                        <button type="submit" class="nav-link btn btn-link text-light fw-bold">Logout</button>
                     </form>
 
                 </div>
