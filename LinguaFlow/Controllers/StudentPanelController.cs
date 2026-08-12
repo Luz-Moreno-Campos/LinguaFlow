@@ -37,6 +37,21 @@ namespace LinguaFlowUI.Controllers
             return View(vm);
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult ConfirmEnrollment(int enrollmentId, bool accept)
+        {
+            var enrollment = _enrollmentService.GetById(enrollmentId);
+
+            if (enrollment == null)
+                return NotFound();
+
+            string newStatus = accept ? "Confirmed" : "Cancelled";
+       
+            _enrollmentService.UpdateStatus(enrollmentId, newStatus);
+
+            return RedirectToAction("MyCourses");
+        }
     }
 
 

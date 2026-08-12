@@ -4,27 +4,68 @@
     Layout = "_UserPanelLayout";
 }
 
-<h2>My Courses</h2>
+<div class="container py-4">
+    <h2 class="fw-bold mb-4">My Courses</h2>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Course</th>
-            <th>Tutor</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
+    <div class="card shadow-sm p-3">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Tutor</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th style="width: 200px;">Actions</th>
+                </tr>
+            </thead>
 
-    <tbody>
-        @foreach (var c in Model)
-        {
-            <tr>
-                <td>@c.CourseTitle</td>
-                <td>@c.TutorName</td>
-                <td>@c.EnrollmentDate.ToShortDateString()</td>
-                <td>@c.Status</td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.CourseTitle</td>
+                        <td>@c.TutorName</td>
+                        <td>@c.EnrollmentDate.ToShortDateString()</td>
+                        <td>
+                            @if (c.Status == "Pending" || c.Status == "PendingConfirmation")
+                            {
+                                <span class="badge bg-warning text-dark">Pending Confirmation</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@c.Status</span>
+                            }
+                        </td>
+                        <td>
+                            @if (c.Status ==  "PendingConfirmation")
+                            {
+                                <div class="d-flex gap-2">
+                                  
+                                    <form asp-controller="StudentPanel" asp-action="ConfirmEnrollment" method="post">
+                                        <input type="hidden" name="enrollmentId" value="@c.EnrollmentId" />
+                                        <input type="hidden" name="accept" value="true" />
+                                        <button type="submit" class="btn btn-success btn-sm fw-semibold">
+                                            Confirm
+                                        </button>
+                                    </form>
+
+                                    <form asp-controller="StudentPanel" asp-action="ConfirmEnrollment" method="post">
+                                        <input type="hidden" name="enrollmentId" value="@c.EnrollmentId" />
+                                        <input type="hidden" name="accept" value="false" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm fw-semibold">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted fs-7">No actions available</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
