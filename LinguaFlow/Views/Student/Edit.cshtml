@@ -16,6 +16,8 @@
 
             <input type="hidden" asp-for="Id" />
 
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
             <div class="mb-3">
                 <label class="form-label fw-semibold">First Name</label>
                 <input asp-for="FirstName" class="form-control" />
@@ -45,6 +47,8 @@
         </form>
 
     </div>
-
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
