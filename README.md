@@ -1,7 +1,7 @@
 # LinguaFlow 🌍📚
 
-**LinguaFlow** is a web-based language course platform built with .NET 8. 
-It connects students with specialized language tutors across various study programs (Business, Travel, Academic, Specific Purposes, and more).
+**LinguaFlow** is a full-stack language course platform built with .NET 8. 
+It connects students with specialized language tutors from a veriery of languages across different study programs (Business, Travel, Academic, Specific Purposes, and more).
 
 The application is engineered using an **N-Tier Architecture** to maintain clean separation of concerns, scalability, and maintainability.
 
