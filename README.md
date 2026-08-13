@@ -78,48 +78,11 @@ The domain model consists of **7 core entities** managed via EF Core Code-First 
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-* [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (LocalDB, Express, or Full Instance)
-* Visual Studio 2022 / VS Code
-
-### Installation & Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/your-username/LinguaFlow.git](https://github.com/your-username/LinguaFlow.git)
-   cd LinguaFlow
-
-2. **Configure Connection String:**
-   Open `appsettings.json` located in `LinguaFlow.MVC` and configure your connection string:
-   ```json
-   {
-     "ConnectionStrings": {
-       "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=LinguaFlowDb;Trusted_Connection=True;MultipleActiveResultSets=true"
-     }
-   }
-
-3. **Apply Database Migrations:**  
-   Run the EF Core database update targeting `LinguaFlow.DAL` as the data project and `LinguaFlow.MVC` as the startup project:  
-   `dotnet ef database update --project LinguaFlow.DAL --startup-project LinguaFlow.MVC`  
-
-   *(Alternatively, in Visual Studio Package Manager Console, set `LinguaFlow.DAL` as Default Project and run `Update-Database`).*  
-
-4. **Run the Application:**  
-   Start the application by running the MVC project:  
-   `dotnet run --project LinguaFlow.MVC`  
-
-   Open your browser and navigate to `https://localhost:7000`.  
-
----
-
 ## 📋 Roadmap / Upcoming Features
 
 - [ ] **Tutor Identity Integration:** Full user account registration, login, and dashboard access for Tutors.  
-- [ ] **Payment Receipts Integration:** Complete processing, approval, and record-keeping for received payments in the Admin Panel.  
+- [ ] **Payment  Integration:** Complete processing, and record-keeping for received payments in the Admin Panel.  
 - [ ] **Email Notifications:** Automated email delivery for payment details and meeting scheduling upon course enrollment.  
-- [ ] **In-App Messaging System:** Direct communication channel between tutors and students.  
+ 
 
 ---
