@@ -2,7 +2,7 @@
 
 @{
     Layout = "_UserPanelLayout";
-    ViewData["Title"] = "Edit Profile";
+ 
 }
 
 <div class="container py-4">
@@ -12,7 +12,6 @@
             <h2 class="fw-bold mb-4">Edit Profile</h2>
 
             <form asp-action="EditProfile" method="post" class="card shadow-sm p-4">
-                @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="Id" />
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -34,7 +33,7 @@
                     <div class="col-12">
                         <label class="form-label fw-semibold">Email</label>
                         <input asp-for="Email" class="form-control" readonly />
-                        <small class="text-muted">Email cannot be changed directly.</small>
+                        <small class="text-muted">Changing your email here will be available shortly. In the meantime, please contact us so that we can update it for you.  .</small>
                     </div>
                 </div>
 

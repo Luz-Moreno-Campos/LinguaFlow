@@ -15,8 +15,16 @@
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
         @errorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["CourseError"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+        @TempData["CourseError"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
@@ -26,9 +34,8 @@
     <h2 class="fw-bold mb-4">Select a Course to Learn @Model.Language.Name</h2>
 
     <div class="mb-4">
-        <label class="fw-semibold mb-3">Select a course:</label>
+        <label class="fw-semibold mb-2">Select a course:</label>
 
-     
         <select id="courseSelect" class="form-select mb-3" onchange="updateDescription()">
             <option value="" selected disabled>-- Choose a course --</option>
             @foreach (var course in Model.Courses)
@@ -40,10 +47,9 @@
         </select>
 
         <h3 class="fw-bold mb-3">Course Description</h3>
-        <div id="courseDescription" class="p-3 border-start border-3 fst-italic border-primary bg-light-subtle rounded-end" style="min-height: 80px;">
-            <span class="text-muted fs-6 fst-italic">Please select a course above to see its details.</span>
+        <div id="courseDescription" class="p-3 border-start border-3 fst-italic border-primary bg-light-subtle rounded-end mb-4" style="min-height: 80px;">
+            <span class="text-muted fs-6">Please select a course above to see its details.</span>
         </div>
-
     </div>
 
     <h3 class="fw-bold mb-3">Choose a Tutor and Enroll</h3>
@@ -60,13 +66,12 @@
                         <p><strong>Availability:</strong> @tutor.Availability</p>
                     </div>
 
-                    <form asp-controller="Enrollment" asp-action="Enroll" method="post" onsubmit="return validateSelection()">
-                      
+                    <form asp-controller="Enrollment" asp-action="Enroll" method="post">
                         <input type="hidden" name="tutorId" value="@tutor.Id" />
                         <input type="hidden" name="courseId" class="selectedCourseId" value="" />
+
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                           
                             <button type="submit" class="btn btn-primary w-100 mt-2">
                                 Enroll
                             </button>
@@ -87,29 +92,30 @@
         }
     </div>
 </div>
+
 @section Scripts {
     <script>
         function updateDescription() {
-            const select = document.getElementById("courseSelect");
-            const selectedOption = select.options[select.selectedIndex];
+            var select = document.getElementById("courseSelect");
+            var selectedOption = select.options[select.selectedIndex];
 
-            const desc = selectedOption.getAttribute("data-description") || "";
-            const courseId = select.value;
+            // Obtener descripción e ID
+            var description = selectedOption.getAttribute("data-description");
+            var courseId = select.value;
 
-            document.getElementById("courseDescription").innerText = desc;
+            // Actualizar la descripción en pantalla
+            var descBox = document.getElementById("courseDescription");
+            if (description && description.trim() !== "") {
+                descBox.innerHTML = '<span>' + description + '</span>';
+            } else {
+                descBox.innerHTML = '<span class="text-muted fs-6">No description available for this course.</span>';
+            }
 
-            document.querySelectorAll(".selectedCourseId").forEach(input => {
+            // Actualizar el valor del courseId en todos los formularios de los tutores
+            var hiddenInputs = document.querySelectorAll(".selectedCourseId");
+            hiddenInputs.forEach(function(input) {
                 input.value = courseId;
             });
-        }
-
-        function validateSelection() {
-            const select = document.getElementById("courseSelect");
-            if (!select.value) {
-                alert("Please select a course before enrolling with a tutor.");
-                return false;
-            }
-            return true;
         }
     </script>
 }

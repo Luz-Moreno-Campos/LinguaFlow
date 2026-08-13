@@ -28,30 +28,34 @@ namespace LinguaFlowUI.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index(string student, string tutor, int? course, string status)
         {
-            var enrollments = _enrollmentService.GetAll();
-            var courses = _courseService.GetAll();
+            IEnumerable<Enrollment> enrollments;
 
+           
             if (!string.IsNullOrWhiteSpace(student))
-                enrollments = enrollments
-                    .Where(e => (e.Student.FirstName + " " + e.Student.LastName)
-                    .Contains(student))
-                    .ToList();
+            {
+                enrollments = _enrollmentService.SearchByStudent(student);
+            }
+            else if (!string.IsNullOrWhiteSpace(tutor))
+            {
+                enrollments = _enrollmentService.SearchByTutor(tutor);
+            }
+            else
+            {
+                enrollments = _enrollmentService.GetAll();
+            }
 
-            if (!string.IsNullOrWhiteSpace(tutor))
-                enrollments = enrollments
-                    .Where(e => e.Course.Tutors
-                        .Any(t => (t.FirstName + " " + t.LastName).Contains(tutor)))
-                    .ToList();
-
-            if (course.HasValue)
-                enrollments = enrollments
-                    .Where(e => e.CourseId == course.Value)
-                    .ToList();
+            
+            if (course.HasValue && course.Value > 0)
+            {
+                enrollments = enrollments.Where(e => e.CourseId == course.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(status))
-                enrollments = enrollments
-                    .Where(e => e.Status == status)
-                    .ToList();
+            {
+                enrollments = enrollments.Where(e => e.Status == status);
+            }
+
+            var courses = _courseService.GetAll();
 
             var vm = new EnrollmentIndexViewModel
             {
@@ -63,9 +67,9 @@ namespace LinguaFlowUI.Controllers
                 Enrollments = enrollments.Select(e => new EnrollmentListViewModel
                 {
                     Id = e.Id,
-                    StudentName = e.Student.FirstName + " " + e.Student.LastName,
-                    TutorName =  e.Tutor.FirstName + " " + e.Tutor.LastName,
-                    CourseTitle = e.Course.Title,
+                    StudentName = e.Student != null ? $"{e.Student.FirstName} {e.Student.LastName}" : "N/A",
+                    TutorName = e.Tutor != null ? $"{e.Tutor.FirstName} {e.Tutor.LastName}" : "N/A",
+                    CourseTitle = e.Course?.Title ?? "N/A",
                     EnrollmentDate = e.EnrollmentDate,
                     Status = e.Status
                 }).ToList()
@@ -79,9 +83,14 @@ namespace LinguaFlowUI.Controllers
         [HttpPost]
         public IActionResult Enroll(int tutorId, int courseId)
         {
-            var userEmail = User.Identity?.Name;
+            if (courseId <= 0)
+            {
+                TempData["CourseError"] = "Please select a course before enrolling with a tutor.";
+                var referer = Request.Headers.Referer.ToString();
+                return !string.IsNullOrEmpty(referer) ? Redirect(referer) : RedirectToAction("Index", "Home");
+            }
 
-            Console.WriteLine("USER EMAIL: " + userEmail);
+            var userEmail = User.Identity?.Name;
             var student = _studentService.GetByEmail(userEmail);
 
             if (student == null)
@@ -89,23 +98,21 @@ namespace LinguaFlowUI.Controllers
 
             if (_enrollmentService.IsEnrolled(student.Id, courseId, tutorId))
             {
-                TempData["EnrollmentError"] = "You are already enrolled in this course.";
-                return Redirect(Request.Headers.Referer.ToString());
+                TempData["EnrolmentError"] = "You are already enrolled in this course.";
+                var referer = Request.Headers.Referer.ToString();
+                return !string.IsNullOrEmpty(referer) ? Redirect(referer) : RedirectToAction("Index", "Home");
             }
 
-            
             var course = _courseService.GetById(courseId);
 
-           
             var enrollment = new Enrollment
             {
                 StudentId = student.Id,
                 TutorId = tutorId,
                 CourseId = courseId,
                 EnrollmentDate = DateTime.Now,
-                Status = "Pending",
+                Status = "PendingConfirmation",
 
-             
                 Payment = new Payment
                 {
                     Amount = course.Price,
@@ -114,11 +121,10 @@ namespace LinguaFlowUI.Controllers
                     CreatedAt = DateTime.UtcNow
                 },
 
-          
                 TutorFee = new TutorFee
                 {
                     TutorId = tutorId,
-                    FeeAmount = course.Price * 0.70m, 
+                    FeeAmount = course.Price * 0.70m,
                     Status = "Pending",
                     CreatedAt = DateTime.UtcNow
                 }
@@ -128,7 +134,6 @@ namespace LinguaFlowUI.Controllers
 
             return RedirectToAction("Success", new { tutorId, courseId });
         }
-
 
         [Authorize(Roles = "Student")]
         [HttpGet]

@@ -1,7 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model LinguaFlow.Models.ViewModels.EnrollmentIndexViewModel
 
-
 @{
     Layout = "_UserPanelLayout";
 }
@@ -9,29 +8,29 @@
 <div class="container py-4">
 
     <h2 class="fw-bold mb-4 text-center">Enrollments</h2>
+
     <form method="get" class="card p-3 shadow-sm mb-4">
         <div class="row g-3 align-items-end">
 
             <div class="col-md-3">
                 <label class="form-label fw-semibold">Search by student</label>
                 <input type="text" name="student" class="form-control form-control-sm"
-                       value="@Model.StudentSearch" />
+                       placeholder="Student name..." />
             </div>
 
             <div class="col-md-3">
                 <label class="form-label fw-semibold">Search by tutor</label>
                 <input type="text" name="tutor" class="form-control form-control-sm"
-                       value="@Model.TutorSearch" />
+                       placeholder="Tutor name..." />
             </div>
 
             <div class="col-md-2">
                 <label class="form-label fw-semibold">Search by course</label>
                 <select name="course" class="form-select form-select-sm">
                     <option value="">All</option>
-
                     @foreach (var c in Model.Courses)
                     {
-                        <option value="@c.Id" selected="@(Model.CourseSearch == c.Id)">
+                        <option value="@c.Id">
                             @c.Title
                         </option>
                     }
@@ -42,26 +41,22 @@
                 <label class="form-label fw-semibold">Search by status</label>
                 <select name="status" class="form-select form-select-sm">
                     <option value="">All</option>
-                    <option value="PendingConfirmation" selected="@(Model.StatusSearch == "Pending")">Pending Confirmation</option>
-                    <option value="Confirmed" selected="@(Model.StatusSearch == "Confirmed")">Confirmed</option>
-                    <option value="Active" selected="@(Model.StatusSearch == "Active")">Active</option>
-                    <option value="Completed" selected="@(Model.StatusSearch == "Completed")">Completed</option>
-                    <option value="Cancelled" selected="@(Model.StatusSearch == "Cancelled")">Cancelled</option>
- 
+                    <option value="PendingConfirmation">Pending Confirmation</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
                 </select>
             </div>
 
-            <div class="col-md-2 d-flex justify-content-end">
-                <button class="btn btn-primary w-100">Search</button>
+            <div class="col-md-2 d-flex justify-content-end gap-2">
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm w-50 text-nowrap">View All</a>
+                <button type="submit" class="btn btn-primary btn-sm w-50">Search</button>
             </div>
 
         </div>
     </form>
 
-
-
-
-   
     <div class="card shadow-lg p-3">
         <table class="table table-hover align-middle">
             <thead class="table-light">
@@ -85,24 +80,23 @@
                         <td>@e.EnrollmentDate.ToShortDateString()</td>
 
                         <td>
-                            
                             <form asp-controller="Enrollment" asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                                @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@e.Id" />
 
                                 <select name="status" class="form-select form-select-sm">
-                                    <option value="PendingConfirmation" selected="@(e.Status == "Pending Confirmation")">Pending Confirmation</option>
+                                    <option value="PendingConfirmation" selected="@(e.Status == "PendingConfirmation")">Pending Confirmation</option>
                                     <option value="Confirmed" selected="@(e.Status == "Confirmed")">Confirmed</option>
                                     <option value="Active" selected="@(e.Status == "Active")">Active</option>
                                     <option value="Completed" selected="@(e.Status == "Completed")">Completed</option>
                                     <option value="Cancelled" selected="@(e.Status == "Cancelled")">Cancelled</option>
                                 </select>
 
-                                <button class="btn btn-primary btn-sm">Save</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
                             </form>
                         </td>
 
                         <td>
-                           
                             <a asp-controller="Enrollment"
                                asp-action="Details"
                                asp-route-id="@e.Id"
@@ -115,6 +109,4 @@
             </tbody>
         </table>
     </div>
-
 </div>
-

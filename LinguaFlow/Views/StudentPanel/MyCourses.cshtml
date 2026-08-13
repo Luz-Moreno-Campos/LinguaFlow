@@ -27,7 +27,8 @@
                         <td>@c.TutorName</td>
                         <td>@c.EnrollmentDate.ToShortDateString()</td>
                         <td>
-                            @if (c.Status == "Pending" || c.Status == "PendingConfirmation")
+                            @* Added this flexible check to support both older entries and new ones ("PendingConfirmation") because I changed status names. *@
+                            @if (c.Status == "PendingConfirmation" || c.Status == "Pending Confirmation" || c.Status == "Pending")
                             {
                                 <span class="badge bg-warning text-dark">Pending Confirmation</span>
                             }
@@ -37,7 +38,7 @@
                             }
                         </td>
                         <td>
-                            @if (c.Status ==  "PendingConfirmation")
+                            @if (c.Status == "PendingConfirmation" || c.Status == "Pending Confirmation" || c.Status == "Pending")
                             {
                                 <div class="d-flex gap-2">
                                   

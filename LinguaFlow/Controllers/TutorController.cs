@@ -72,25 +72,22 @@ namespace LinguaFlowUI.Controllers
 
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult ByLanguage(int id)
         {
             var language = _languageService.GetById(id);
-            if (language == null)
-                return NotFound();
-
-            var tutors = _tutorService.GetTutorsByLanguage(id);
             var courses = _courseService.GetAll();
+            var tutors = _tutorService.GetTutorsByLanguage(id);
 
             var vm = new ExploreTutorsViewModel
             {
                 Language = language,
-                Tutors = tutors,
-                Courses = courses
+                Courses = courses,
+                Tutors = tutors
             };
 
             return View("ExploreByLanguage", vm);
         }
-
 
 
         [Authorize(Roles = "Admin")]

@@ -51,5 +51,15 @@ namespace LinguaFlow.BLL
             return _enrollmentRepo.Exists(studentId, courseId, tutorId);
                
         }
+
+        public List<Enrollment> SearchByStudent(string studentSearch)
+        {
+            return _enrollmentRepo.SearchByStudent(studentSearch);
+        }
+
+        public List<Enrollment> SearchByTutor(string tutorSearch)
+        {
+            return _enrollmentRepo.SearchByTutor(tutorSearch);
+        }
     }
 }

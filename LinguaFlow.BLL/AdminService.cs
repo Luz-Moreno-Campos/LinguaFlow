@@ -10,22 +10,22 @@ namespace LinguaFlow.BLL
 {
     public class AdminService
     {
-        private readonly PaymentRepository _paymentRepo;
-        private readonly TutorFeeRepository _feeRepo;
+        private readonly PaymentService _paymentService;
+        private readonly TutorFeeService _feeService;
         private readonly TutorRepository _tutorRepo;
         private readonly StudentRepository _studentRepo;
         private readonly EnrollmentRepository _enrollmentRepo;
 
         public AdminService(
-            PaymentRepository paymentRepo,
-            TutorFeeRepository feeRepo,
+            PaymentService paymentService,
+            TutorFeeService feeService,
             TutorRepository tutorRepo,
             StudentRepository studentRepo,
             EnrollmentRepository enrollmentRepo
             )
         {
-            _paymentRepo = paymentRepo;
-            _feeRepo = feeRepo;
+            _paymentService = paymentService;
+            _feeService = feeService;
             _tutorRepo = tutorRepo;
             _studentRepo = studentRepo;
             _enrollmentRepo = enrollmentRepo;
@@ -38,11 +38,10 @@ namespace LinguaFlow.BLL
                 TotalTutors = _tutorRepo.CountTutors(),
                 TotalStudents = _studentRepo.CountStudents(),
                 TotalEnrollments = _enrollmentRepo.CountEnrollments(),
-                TotalPaymentsReceived = _paymentRepo.SumPaidPayments(),
-                TotalPaymentsPending = _paymentRepo.SumPendingPayments(),
-                TotalFeesPending = _feeRepo.SumPendingFees()
+                TotalPaymentsReceived = _paymentService.GetPaidPaymentsTotal(),
+                TotalPaymentsPending = _paymentService.GetPendingPaymentsTotal(),
+                TotalFeesPending = _feeService.GetPendingFeesTotal()
             };
         }
     }
 }
-

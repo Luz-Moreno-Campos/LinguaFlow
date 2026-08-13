@@ -21,7 +21,6 @@ namespace Linguaflow.DAL
         public List<Language> GetAll()
         {
             return _context.Languages
-                //.Include(l => l.Tutors) 
                 .ToList();
         }
 

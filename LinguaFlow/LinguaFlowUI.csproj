@@ -10,13 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Views\Course\" />
-		<Folder Include="Views\Language\" />
-		<Folder Include="Views\Payment\" />
-		<Folder Include="Views\TutorFee\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.29" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.29" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.29">

@@ -48,6 +48,8 @@ namespace Linguaflow.DAL
             _context.Enrollments.Add(enrollment);
             _context.SaveChanges();
         }
+
+
         public Enrollment GetById(int id)
         {
             return _context.Enrollments
@@ -78,6 +80,39 @@ namespace Linguaflow.DAL
                        && e.CourseId == courseId
                        && e.TutorId == tutorId
                        && e.Status != "Cancelled");
+        }
+
+
+      
+        public List<Enrollment> SearchByStudent(string studentSearch)
+        {
+            if (string.IsNullOrWhiteSpace(studentSearch))
+                return GetAll(); 
+
+            return _context.Enrollments
+                .Include(e => e.Student)
+                .Include(e => e.Course)
+                .Include(e => e.Tutor)
+                .Where(e => e.Student != null &&
+                           (e.Student.FirstName.Contains(studentSearch) ||
+                            e.Student.LastName.Contains(studentSearch)))
+                .ToList();
+        }
+
+       
+        public List<Enrollment> SearchByTutor(string tutorSearch)
+        {
+            if (string.IsNullOrWhiteSpace(tutorSearch))
+                return GetAll();
+
+            return _context.Enrollments
+                .Include(e => e.Student)
+                .Include(e => e.Course)
+                .Include(e => e.Tutor)
+                .Where(e => e.Tutor != null &&
+                           (e.Tutor.FirstName.Contains(tutorSearch) ||
+                            e.Tutor.LastName.Contains(tutorSearch)))
+                .ToList();
         }
 
     }
