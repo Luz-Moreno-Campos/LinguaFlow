@@ -92,6 +92,6 @@ The domain model consists of **7 core entities** managed via EF Core Code-First 
 ![Application ScreenShot](Screenshots/Home.png)
 ![Application ScreenShot](Screenshots/chooseCourse.png)
 ![Application ScreenShot](Screenshots/successfulEnrollment.png)
-![Application ScreenShot](Screenshots/MYCOURSES.png)
+![Application ScreenShot](Screenshots/myCourses.png)
 ![Application ScreenShot](Screenshots/ADMIN.png)
 ![Application ScreenShot](Screenshots/ScreenshotEnrollment.png)
